@@ -11,6 +11,15 @@ gem 'rails', '~> 7.0.3'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
+# Added jquery for rails
+gem 'jquery-rails'
+
+# Adds Bootstrap to make more beautiful CSS designs
+gem 'bootstrap-sass'
+
+# Use Sass to process CSS
+gem 'sassc-rails'
+
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 
