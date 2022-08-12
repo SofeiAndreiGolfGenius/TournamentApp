@@ -59,8 +59,12 @@ gem 'sassc-rails'
 # Manage app-like JavaScript modules in Rails
 gem 'webpacker'
 
+# Allows you to paginate listings
+gem 'will_paginate'
+
 # Navigate your web application faster
 gem 'turbolinks'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
