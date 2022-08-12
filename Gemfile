@@ -8,6 +8,9 @@ ruby '3.0.1'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.3'
 
+# Added jquery for rails
+gem 'jquery-rails'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
@@ -49,6 +52,9 @@ gem 'sassc-rails'
 
 # Manage app-like JavaScript modules in Rails
 gem 'webpacker'
+
+# Allows you to paginate listings
+gem 'will_paginate'
 
 # Navigate your web application faster
 gem 'turbolinks'
