@@ -1,2 +1,5 @@
-%h1 User#show
-%p Find me in app/views/user/show.html.erb
+%h1
+  = @user.name
+%p
+  = link_to "Delete", @user, method: "delete",
+    data: {confirm: "Are you sure?"}
