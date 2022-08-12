@@ -1,0 +1,8 @@
+%p Hello from the index
+
+= will_paginate
+- @users.each do |user|
+  %li
+    = render user
+
+= will_paginate
