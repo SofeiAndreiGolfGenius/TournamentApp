@@ -8,8 +8,10 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
+  get '/create_team', to: 'teams#new'
   root 'static_pages#home'
   resources :users
+  resources :teams
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
