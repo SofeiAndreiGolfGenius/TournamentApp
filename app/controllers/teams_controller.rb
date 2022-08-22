@@ -17,6 +17,18 @@ class TeamsController < ApplicationController
     end
   end
 
+  def show
+    @team = Team.find(params[:id])
+    @leader = User.find(@team.leader_id)
+    @members = @team.members.where.not(id: @team.leader_id).paginate(page: params[:page])
+  end
+
+  def destroy
+    @team = Team.find(params[:id]).destroy
+    flash[:success] = 'Deleted team successfully'
+    redirect_to root_path
+  end
+
   private
 
   def team_params

@@ -10,7 +10,7 @@ module SessionsHelper
   end
 
   def current_user?(user)
-    @current_user == user && !user.nil?
+    !user.nil? && current_user == user
   end
 
   def logged_in?

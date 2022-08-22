@@ -1,7 +1,15 @@
 %h1
   = @user.name
+
 %p
-  = link_to "Delete", @user, method: "delete",
-    data: {confirm: "Are you sure?"}
-- if @user.team_id.nil?
-  = link_to "Want to create a team?", create_team_path, class:'btn, btn-primary'
+  = link_to 'Delete', @user, method: 'delete',
+                             data: { confirm: 'Are you sure?' }
+
+- if !@user.team_id.nil?
+  %h3 Team Name
+  %div
+    = @team.name
+- if @user.team_id.nil? and current_user?(@user)
+  = link_to 'Want to create a team?', create_team_path, class:'btn, btn-primary'
+- if !current_user?(@user) and !@user.team_id.nil? and team_leader?(current_user)
+  = link_to 'Kick out of team', kick_out_user_path(@user),  class:'btn, btn-primary'
