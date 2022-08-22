@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_one :team
+  has_one :team, dependent: :nullify
   before_save { self.email = email.downcase }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]\d]+)*\.[a-z]+\z/i
   validates :name, presence: true
@@ -13,5 +13,9 @@ class User < ApplicationRecord
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
+  end
+
+  def join_team(team_id)
+    self.update_attribute(:team_id, team_id)
   end
 end
