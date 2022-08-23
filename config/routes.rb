@@ -15,9 +15,24 @@ Rails.application.routes.draw do
       get 'join/:team_id', :action => 'join_team', :as => 'join'
       get 'leave', :action => 'leave_team', :as => 'leave'
       get 'kick_out', :action => 'kick_out_of_team', :as => 'kick_out'
+      get :team_invitations
     end
   end
-  resources :teams
+  resources :teams do
+    member do
+      get :invited_to_team
+    end
+  end
+  resources :team_invitations, only: [:destroy] do
+    member do
+      get :ask_to_join
+      get :invite_to
+      get 'accept_invitation/:team_id', :action => 'accept_invitation', :as => 'accept'
+      get 'reject_invitation/:team_id', :action => 'reject_invitation', :as => 'reject'
+      get 'approve_invitation/:user_id', :action => 'approve_invitation', :as => 'approve'
+      get 'deny_invitation/:user_id', :action => 'deny_invitation', :as => 'deny'
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

@@ -6,10 +6,21 @@
                              data: { confirm: 'Are you sure?' }
 
 - if !@user.team_id.nil?
-  %h3 Team Name
+  %h3 Team
   %div
-    = @team.name
-- if @user.team_id.nil? and current_user?(@user)
-  = link_to 'Want to create a team?', create_team_path, class:'btn, btn-primary'
-- if !current_user?(@user) and !@user.team_id.nil? and team_leader?(current_user)
-  = link_to 'Kick out of team', kick_out_user_path(@user),  class:'btn, btn-primary'
+    = link_to @team.name, @team
+
+  - if !current_user?(@user) and @user.team_id == current_user.team_id and team_leader?(current_user)
+    = link_to 'Kick out of team', kick_out_user_path(@user),  class:'btn, btn-primary'
+- else
+  - if @user.team_id.nil? and current_user?(@user)
+    = link_to 'Want to create a team?', create_team_path, class:'btn, btn-primary'
+  - if !current_user?(@user) and @user.team_id.nil? and !current_user.team_id.nil? and !already_invited?(@user, get_team(current_user))
+    = link_to 'Invite to team', invite_to_team_invitation_path, class:'btn, btn-primary'
+
+  - if current_user?(@user)
+    %h3 Team invitations
+    = will_paginate @invitations
+    %ol
+      = render @invitations
+    = will_paginate @invitations

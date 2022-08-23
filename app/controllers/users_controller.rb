@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  #before_action :correct_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update]
   def new
     @user = User.new
   end
@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      log_in @user
       flash[:success] = 'User registered successfully'
       redirect_to @user
     else
@@ -16,7 +17,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    unless @user.team_id.nil?
+    if @user.team_id.nil?
+      @invitations = @user.team_invitations.where(created_by: 'user').paginate(page: params[:page])
+    else
       @team = Team.find(@user.team_id)
     end
   end
@@ -62,6 +65,11 @@ class UsersController < ApplicationController
     team = Team.find(user.team_id)
     user.update_attribute(:team_id, nil)
     redirect_to team
+  end
+
+  def team_invitations
+    @user = User.find(params[:id])
+
   end
 
   private
