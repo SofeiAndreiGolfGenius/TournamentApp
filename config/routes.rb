@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   get '/create_team', to: 'teams#new'
+  get '/create_tournament', to: 'tournaments#new'
   root 'static_pages#home'
   resources :users do
     member do
@@ -31,6 +32,12 @@ Rails.application.routes.draw do
       get 'reject_invitation/:team_id', :action => 'reject_invitation', :as => 'reject'
       get 'approve_invitation/:user_id', :action => 'approve_invitation', :as => 'approve'
       get 'deny_invitation/:user_id', :action => 'deny_invitation', :as => 'deny'
+    end
+  end
+  resources :tournaments do
+    member do
+      get :join_tournament
+      get :leave_tournament
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

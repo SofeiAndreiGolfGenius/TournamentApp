@@ -1,0 +1,7 @@
+%h1
+  = @tournament.name
+%h2
+  = @tournament.sport
+- if @tournament.organizer_id == current_user.id
+  = link_to 'Delete', @tournament, method: 'delete',
+                             data: { confirm: 'Are you sure?' }

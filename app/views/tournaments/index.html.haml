@@ -1,0 +1,6 @@
+= link_to 'Create a new Tournament', create_tournament_path
+= will_paginate
+- @tournaments.each do |tournament|
+  %li
+    = render tournament
+= will_paginate
