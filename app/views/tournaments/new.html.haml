@@ -1,0 +1,7 @@
+= form_with(model: @tournament, local: true) do |f|
+  = render 'shared/error_messages', object: @tournament
+  = f.label :name
+  = f.text_field :name, class: 'form-control'
+  = f.label :sport
+  = f.select :sport, options_for_select([['football'], ['basketball'], ['golf']]), class: 'form-control'
+  = f.submit 'Create tournament', class: 'btn btn-primary'
