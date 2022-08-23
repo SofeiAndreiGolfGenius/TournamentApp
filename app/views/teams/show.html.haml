@@ -2,9 +2,7 @@
   = @team.name
 %h2
 - if current_user.team_id.nil?
-  = link_to "Want to create a team?", create_team_path, class:'btn, btn-primary'
-- if current_user.team_id != @team.id
-  = link_to "Join team", join_user_path(:team_id => @team.id), class:'btn, btn-primary'
+  = link_to 'Ask to join team', ask_to_join_team_invitation_path, class:'btn, btn-primary'
 - if current_user.team_id == @team.id and current_user.id != @team.leader_id
   = link_to "Leave team", leave_user_path, class:'btn, btn-primary'
 - if current_user.id == @team.leader_id
@@ -18,6 +16,14 @@
     %h2
       Members
     = will_paginate @members
-    %ol
-      = render @members
+    - @members.each do |member|
+      %li
+        = render member
     = will_paginate @members
+
+  - if current_user.team_id == @team.id
+    %h3 Team invitations
+    = will_paginate @invitations
+    %ol
+      = render @invitations
+    = will_paginate @invitations

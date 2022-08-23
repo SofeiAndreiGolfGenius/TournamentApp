@@ -1,5 +1,9 @@
 class User < ApplicationRecord
-  belongs_to :team, dependent: :destroy
+  has_one :team, dependent: :destroy
+
+  has_many :team_invitations, dependent: :destroy
+  has_many :teams, through: :team_invitations
+
   before_save { self.email = email.downcase }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]\d]+)*\.[a-z]+\z/i
   validates :name, presence: true
@@ -15,7 +19,18 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def join_team(team_id)
-    self.update_attribute(:team_id, team_id)
+  def ask_to_join(team)
+    self.teams << team
+    invitation = TeamInvitation.find_by(user_id: self.id, team_id: team.id)
+    invitation.update_attribute(:created_by, 'team')
+  end
+
+  def decline_invitation(team)
+    self.teams.delete(team)
+  end
+
+  def accept_invitation(team)
+    self.update_attribute(:team_id, team.id)
+    self.teams.delete_all
   end
 end
