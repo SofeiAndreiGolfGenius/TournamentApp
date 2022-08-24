@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module UsersHelper
   def team_leader?(user)
-    team = Team.find(user.team_id)
+    team = get_team(user)
     team.leader_id == user.id
   end
 

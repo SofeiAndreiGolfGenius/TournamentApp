@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTeamInvitations < ActiveRecord::Migration[7.0]
   def change
     create_table :team_invitations do |t|
@@ -9,6 +11,6 @@ class CreateTeamInvitations < ActiveRecord::Migration[7.0]
     end
     add_index :team_invitations, :team_id
     add_index :team_invitations, :user_id
-    add_index :team_invitations, [:team_id, :user_id], unique: true
+    add_index :team_invitations, %i[team_id user_id], unique: true
   end
 end

@@ -1,5 +1,6 @@
-class TournamentsController < ApplicationController
+# frozen_string_literal: true
 
+class TournamentsController < ApplicationController
   def new
     @tournament = Tournament.new
   end
