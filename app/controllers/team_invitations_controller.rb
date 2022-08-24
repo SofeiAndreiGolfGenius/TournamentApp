@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TeamInvitationsController < ApplicationController
   def ask_to_join
     @team = Team.find(params[:id])
@@ -64,5 +66,4 @@ class TeamInvitationsController < ApplicationController
   def destroy
     # the invite must be deleted
   end
-
 end

@@ -13,9 +13,8 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   resources :users do
     member do
-      get 'join/:team_id', :action => 'join_team', :as => 'join'
-      get 'leave', :action => 'leave_team', :as => 'leave'
-      get 'kick_out', :action => 'kick_out_of_team', :as => 'kick_out'
+      get 'leave', action: 'leave_team', as: 'leave'
+      get 'kick_out', action: 'kick_out_of_team', as: 'kick_out'
       get :team_invitations
     end
   end
@@ -28,18 +27,15 @@ Rails.application.routes.draw do
     member do
       get :ask_to_join
       get :invite_to
-      get 'accept_invitation/:team_id', :action => 'accept_invitation', :as => 'accept'
-      get 'reject_invitation/:team_id', :action => 'reject_invitation', :as => 'reject'
-      get 'approve_invitation/:user_id', :action => 'approve_invitation', :as => 'approve'
-      get 'deny_invitation/:user_id', :action => 'deny_invitation', :as => 'deny'
+      get 'accept_invitation/:team_id', action: 'accept_invitation', as: 'accept'
+      get 'reject_invitation/:team_id', action: 'reject_invitation', as: 'reject'
+      get 'approve_invitation/:user_id', action: 'approve_invitation', as: 'approve'
+      get 'deny_invitation/:user_id', action: 'deny_invitation', as: 'deny'
     end
   end
-  resources :tournaments do
-    member do
-      get :join_tournament
-      get :leave_tournament
-    end
-  end
+  resources :tournaments
+  resources :tournament_participating_teams, only: %i[create destroy]
+  resources :tournament_participating_users, only: %i[create destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
