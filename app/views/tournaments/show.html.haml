@@ -5,21 +5,8 @@
 - if @tournament.organizer_id == current_user.id
   = link_to 'Delete', @tournament, method: 'delete',
                              data: { confirm: 'Are you sure?' }
-- if @tournament.sport == 'golf'
-  - if !user_already_joined?(@tournament, current_user)
-    = form_with(model: current_user.tournament_participating_users.build, local: true) do |f|
-      %div
-        = hidden_field_tag :tournament_id, @tournament.id
-      = f.submit 'Join tournament', class: 'btn btn-primary'
-  - else
-    = form_with(model: current_user.tournament_participating_users.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
-      = f.submit 'Leave tournament', class: 'btn btn-primary'
+%br
+- if !@tournament.started
+  = render 'not_started_tournament'
 - else
-  - if !team_already_joined?(@tournament, get_team(current_user))
-    = form_with(model: get_team(current_user).tournament_participating_teams.build, local: true) do |f|
-      %div
-        = hidden_field_tag :tournament_id, @tournament.id
-      = f.submit 'Join tournament', class: 'btn btn-primary'
-  - else
-    = form_with(model: get_team(current_user).tournament_participating_teams.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
-      = f.submit 'Leave tournament', class: 'btn btn-primary'
+  = render 'started_tournament'

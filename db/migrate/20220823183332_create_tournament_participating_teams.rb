@@ -5,7 +5,6 @@ class CreateTournamentParticipatingTeams < ActiveRecord::Migration[7.0]
     create_table :tournament_participating_teams do |t|
       t.integer :tournament_id
       t.integer :team_id
-      t.string :created_by
       t.boolean :eliminated, default: false
       t.timestamps
     end

@@ -10,4 +10,8 @@ module UsersHelper
     team_id = user.team_id
     team = Team.find(team_id)
   end
+
+  def same_team?(user1, user2)
+    !user1.team_id.nil? and user1.team_id == user2.team_id
+  end
 end

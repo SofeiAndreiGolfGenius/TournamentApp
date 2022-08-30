@@ -79,6 +79,9 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   gem 'spring'
+
+  # Allows to create sample users with semi-realistic names and emails
+  gem 'faker'
 end
 
 group :test do

@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class TeamInvitationsController < ApplicationController
+  before_action :logged_in_user
+  before_action :team_member, only: [:approve_invitation, :deny_invitation]
   def ask_to_join
     @team = Team.find(params[:id])
     current_user.ask_to_join(@team)
+    flash[:success] = 'Request sent, wait for a team member to accept you'
     respond_to do |format|
       format.html { redirect_to @team }
       format.js
@@ -15,6 +18,7 @@ class TeamInvitationsController < ApplicationController
     team_id = current_user.team_id
     team = Team.find(team_id)
     team.invite_to_team(@user)
+    flash[:success] = 'Invite sent, wait for the user to respond'
     respond_to do |format|
       format.html { redirect_to @user }
       format.js
@@ -24,6 +28,7 @@ class TeamInvitationsController < ApplicationController
   def accept_invitation
     team = Team.find(params[:team_id])
     current_user.accept_invitation(team)
+    flash[:success] = "Invite accepted, welcome to #{team.name}"
     respond_to do |format|
       format.html { redirect_to current_user }
       format.js
@@ -45,6 +50,7 @@ class TeamInvitationsController < ApplicationController
     @team = Team.find(params[:id])
     user = User.find(params[:user_id])
     @team.approve_invitation(user)
+    flash[:success] = "Request approved, #{user.name} was added to your team"
     respond_to do |format|
       format.html { redirect_to @team }
       format.js
@@ -65,5 +71,12 @@ class TeamInvitationsController < ApplicationController
 
   def destroy
     # the invite must be deleted
+  end
+
+  private
+
+  def team_member
+    team = Team.find(params[:id])
+    redirect_to(team) unless team == get_team(current_user)
   end
 end
