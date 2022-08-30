@@ -33,9 +33,18 @@ Rails.application.routes.draw do
       get 'deny_invitation/:user_id', action: 'deny_invitation', as: 'deny'
     end
   end
-  resources :tournaments
+  resources :tournaments do
+    member do
+      get :start
+    end
+  end
   resources :tournament_participating_teams, only: %i[create destroy]
   resources :tournament_participating_users, only: %i[create destroy]
+  resources :matches, only: %i[update] do
+    member do
+      get :declare_winner
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

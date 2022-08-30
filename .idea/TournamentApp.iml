@@ -28,6 +28,7 @@
     </content>
     <orderEntry type="jdk" jdkName="RVM: ruby-3.0.1" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bootstrap.bundle" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actioncable (v7.0.3.1, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailbox (v7.0.3.1, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailer (v7.0.3.1, RVM: ruby-3.0.1) [gem]" level="application" />
@@ -56,6 +57,7 @@
     <orderEntry type="library" scope="PROVIDED" name="digest (v3.1.0, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.11.0, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="execjs (v2.8.1, RVM: ruby-3.0.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faker (v2.21.0, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.15.5, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.0.0, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="haml (v5.2.2, RVM: ruby-3.0.1) [gem]" level="application" />
@@ -131,7 +133,6 @@
     <orderEntry type="library" scope="PROVIDED" name="will_paginate (v3.3.1, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="xpath (v3.2.0, RVM: ruby-3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.6.0, RVM: ruby-3.0.1) [gem]" level="application" />
-    <orderEntry type="library" name="bootstrap.bundle" level="application" />
   </component>
   <component name="RModuleSettingsStorage">
     <LOAD_PATH number="0" />

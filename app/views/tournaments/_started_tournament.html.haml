@@ -1,0 +1,11 @@
+%div.container
+  - if !@tournament.matches.last.winner_id.nil?
+    = @message
+  %div.row.align-items-start
+    - nr_rounds = @tournament.nr_of_rounds
+    - (1..nr_rounds).each do |i|
+      %div.col
+        = round_name(2**(nr_rounds - i))
+        - matches = get_matches_from_round(i)
+        - matches.each do |match|
+          = render 'matches/match', match: match

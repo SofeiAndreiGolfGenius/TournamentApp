@@ -1,0 +1,34 @@
+%div.list-group-item.text-center{:style => 'width: 15rem'}
+  - if match.winner_id == match.player1_id
+    %div{:style => 'color: green'}
+      = !match.player1_id.nil? ? match.player1.name : '-'
+  - else
+    %div
+      = !match.player1_id.nil? ? match.player1.name : '-'
+  vs
+  - if match.winner_id == match.player2_id
+    %div{:style => 'color: green'}
+      = !match.player2_id.nil? ? match.player2.name : '-'
+  - else
+    %div
+      = !match.player2_id.nil? ? match.player2.name : '-'
+  - if !match.player1_id.nil? && !match.player2_id.nil?
+    - if participated_in_match?(current_user, match) || tournament_organizer?(@tournament, current_user)
+      - if (match.player1_score.nil? || match.player2_score.nil?) && match.winner_id.nil?
+        = form_with(model: match, local: true) do |f|
+          = render 'shared/error_messages', object: match
+          = f.label :Player1
+          = f.number_field :player1_score, :min => 0, class: 'form-control'
+          = f.label :Player2
+          = f.number_field :player2_score, :min => 0, class: 'form-control'
+          = f.submit 'Declare Score', class: 'btn btn-primary'
+      - else
+        = match.player1_score
+        = '-'
+        = match.player2_score
+        - if match.winner_id.nil?
+          %br
+          - if tournament_organizer?(@tournament, current_user)
+            = link_to 'Confirm score', declare_winner_match_path(id: match.id)
+          - else
+            Not yet confirmed score

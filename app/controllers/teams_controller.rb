@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TeamsController < ApplicationController
+  before_action :logged_in_user, only: [:create, :destroy]
+  before_action :current_team_leader, only: [:destroy]
   def new
     @team = Team.new
   end
@@ -45,5 +47,10 @@ class TeamsController < ApplicationController
 
   def team_params
     params.require(:team).permit(:name)
+  end
+
+  def current_team_leader
+    team = Team.find(params[:id])
+    redirect_to(team) unless team.leader_id == current_user.id
   end
 end
