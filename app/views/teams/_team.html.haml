@@ -1,1 +1,3 @@
-= link_to team.name, team
+= link_to team.name, team, class: 'item_for_index'
+- if current_user.team_id == team.id
+  = '-> (Your team)'

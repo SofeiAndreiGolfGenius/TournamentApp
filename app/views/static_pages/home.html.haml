@@ -1,8 +1,8 @@
-%h1 StaticPages#home
-%p Find me in app/views/static_pages/home.html.haml
+%h1 Home
 - if logged_in?
-  = "Hello #{current_user.name}"
-  = link_to "Sign Out", logout_path, method: "delete", class:'btn, btn-primary'
+  %h3
+    = "Hello #{current_user.name}!!!"
+  = link_to "Sign Out", logout_path, method: "delete", class:'btn btn-primary gray_button'
 - else
-  = link_to "Sign up", signup_path, class:'btn, btn-primary'
-  = link_to "Login", login_path, class:'btn, btn-primary'
+  = link_to "Sign up", signup_path, class:'btn btn-primary gray_button'
+  = link_to "Login", login_path, class:'btn btn-primary gray_button'

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class TeamsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy]
+  before_action :logged_in_user
   before_action :current_team_leader, only: [:destroy]
+  before_action :not_member_of_a_team, only: [:create]
   def new
     @team = Team.new
   end
@@ -29,7 +30,7 @@ class TeamsController < ApplicationController
   end
 
   def index
-    @teams = Team.all.order(created_at: :desc, id: :desc).paginate(page: params[:page], per_page: 10)
+    @teams = Team.all.order(created_at: :desc, id: :desc).paginate(page: params[:page], per_page: 20)
   end
 
   def invited_to_team
@@ -52,5 +53,13 @@ class TeamsController < ApplicationController
   def current_team_leader
     team = Team.find(params[:id])
     redirect_to(team) unless team.leader_id == current_user.id
+  end
+
+  def not_member_of_a_team
+    unless current_user.team_id.nil?
+      flash[:danger] = 'Your are already a part of this team'
+      team = get_team(current_user)
+      redirect_to team
+    end
   end
 end

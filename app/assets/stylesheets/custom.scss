@@ -14,3 +14,53 @@ body{
   margin-top: 45px;
   @include box_sizing;
 }
+
+.match {
+  width: auto;
+  border: 1px solid black;
+  .winner {
+    color: green
+  }
+  .score {
+    font-weight: bold;
+    font-size: 25px;
+  }
+}
+.declare_winner_text{
+  font-weight: bold;
+  font-size: 25px;
+  color: darkgoldenrod;
+}
+.right{
+  float: right
+}
+.round_name{
+  font-weight: bold;
+  font-size: 25px;
+}
+.center_vertically{
+  align-self: center;
+}
+.nice_gray{
+  color: #B4AAA3
+}
+.size20{
+  font-size: 20px;
+}
+.dropdown-menu{
+  background-color: #2E2F30;
+  color: #999999;
+}
+.gray_button{
+  background-color: #2E2F30;
+  &:hover{
+    background-color: #B4AAA3;
+  }
+}
+.item_for_index{
+  color: #2E2F30;
+  font-size: 20px;
+}
+.team{
+  color: #999999;
+}

@@ -1,3 +1,6 @@
+%h1
+  Teams
+  = image_tag('team_icon.jpeg', width: 45)
 - if current_user.team_id.nil?
   = link_to 'Want to create a team?', create_team_path, class:'btn, btn-primary'
 = will_paginate

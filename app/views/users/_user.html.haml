@@ -1,1 +1,7 @@
-= link_to user.name, user
+= link_to user.name, user, class: 'item_for_index'
+- if user.id == current_user.id
+  = "-> (You)"
+- else
+  - if user.team_id.nil? && !current_user.team_id.nil?
+    - if get_team(current_user).leader_id == current_user.id
+      = "-> (Available to recruit to team)"

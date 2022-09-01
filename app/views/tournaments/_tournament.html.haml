@@ -1,1 +1,16 @@
-= link_to tournament.name, tournament
+= link_to tournament.name, tournament, class: 'item_for_index'
+- if tournament.started?
+  - if !tournament.matches.last.winner_id.nil?
+    = ' -> (Tournament finished, click to see who won it!)'
+  - else
+    - if user_already_joined?(tournament, current_user) || team_already_joined?(tournament, get_team(current_user))
+      = ' -> (Check if you have any matches)'
+- else
+  - if tournament_organizer?(tournament, current_user) && !tournament.started? && (tournament.users.size >=5 || tournament.teams.size >= 5)
+    = ' -> (You can start this tournament if you want)'
+  - else
+    - if tournament.sport == 'golf' && !user_already_joined?(tournament, current_user)
+      = ' -> (Tournament not started, you can still join)'
+    - else
+      - if !current_user.team_id.nil? && !team_already_joined?(tournament, get_team(current_user))
+        = ' -> (Tournament not started, you can still join)'

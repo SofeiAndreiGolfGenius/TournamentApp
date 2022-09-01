@@ -1,11 +1,11 @@
 %li
   - if team_invitation.created_by == 'user'
     - team = Team.find(team_invitation.team_id)
-    = link_to team.name, team
-    = link_to "Accept", accept_team_invitation_path(:team_id => team.id), class:'btn'
-    = link_to "Decline", reject_team_invitation_path(:team_id => team.id), class:'btn'
+    = link_to team.name, team, class: 'item_for_index'
+    = link_to "Accept", accept_team_invitation_path(:team_id => team.id), class: 'btn item_for_index'
+    = link_to "Decline", reject_team_invitation_path(:team_id => team.id), class: 'btn item_for_index'
   - else
     - user = User.find(team_invitation.user_id)
-    = link_to user.name, user
-    = link_to "Approve", approve_team_invitation_path(:user_id => user.id), class:'btn'
-    = link_to "Deny", deny_team_invitation_path(:user_id => user.id), class:'btn'
+    = link_to user.name, user, class: 'item_for_index'
+    = link_to "Approve", approve_team_invitation_path(:user_id => user.id), class:'btn item_for_index'
+    = link_to "Deny", deny_team_invitation_path(:user_id => user.id), class:'btn item_for_index'

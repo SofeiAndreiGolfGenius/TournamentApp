@@ -23,6 +23,7 @@ module TournamentsHelper
   end
 
   def initialize_matches
+    puts @tournament.sport
     @randomized_participants = @tournament.sport == 'golf' ? @tournament.users.shuffle : @tournament.teams.shuffle
     nr_games_in_first_round = 2**(@tournament.nr_of_rounds - 1)
     nr_games_in_total = 2**@tournament.nr_of_rounds - 1

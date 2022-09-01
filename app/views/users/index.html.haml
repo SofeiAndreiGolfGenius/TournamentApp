@@ -1,8 +1,10 @@
-%p Hello from the index
-
+%h1
+  Users
+  = image_tag('user_icon.jpeg', width: 45)
 = will_paginate
-- @users.each do |user|
-  %li
-    = render user
+%ul
+  - @users.each do |user|
+    %li
+      = render user
 
 = will_paginate

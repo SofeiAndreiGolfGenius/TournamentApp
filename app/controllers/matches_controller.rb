@@ -1,7 +1,11 @@
 class MatchesController < ApplicationController
+  before_action :logged_in_user
+  before_action :tournament_organizer, only: %i[declare_winner reset_score]
+  before_action :match_participant_or_organizer, only: [:update]
+  before_action :score_already_declared, only: [:update]
   def update
     @match = Match.find(params[:id])
-    tournament = Tournament.find(@match.tournament_id)
+    tournament = @match.tournament
     if @match.update(match_params)
       message1 = 'Score declared successfully'
       message2 = tournament_organizer?(tournament, current_user) ? '' : ', waiting for tournament organizer to approve'
@@ -22,7 +26,7 @@ class MatchesController < ApplicationController
     if @match.player2_id.nil? && !@match.player1_id.nil?
       @match.update_attribute(:winner_id, @match.player1_id)
     else
-      tournament = Tournament.find(@match.tournament_id)
+      tournament = @match.tournament
       if tournament.sport == 'golf'
         winner_id = @match.player1_score < @match.player2_score ? @match.player1_id : @match.player2_id
       else
@@ -36,9 +40,38 @@ class MatchesController < ApplicationController
     end
   end
 
+  def reset_score
+    @match = Match.find(params[:id])
+    @match.update!(player1_score: nil,
+                   player2_score: nil)
+    redirect_to @match.tournament
+  end
+
   private
 
   def match_params
     params.require(:match).permit(:player1_score, :player2_score)
+  end
+
+  def tournament_organizer
+    match = Match.find(params[:id])
+    tournament = match.tournament
+    redirect_to(tournament) unless tournament.organizer_id == current_user.id
+  end
+
+  def match_participant_or_organizer
+    match = Match.find(params[:id])
+    tournament = match.tournament
+    redirect_to(tournament) unless tournament.organizer_id == current_user.id ||
+                                   participated_in_match?(current_user, match)
+  end
+
+  def score_already_declared
+    match = Match.find(params[:id])
+    tournament = match.tournament
+    unless match.player1_score.nil? && match.player2_score.nil?
+      flash[:danger] = 'Score has already been declared'
+      redirect_to(tournament)
+    end
   end
 end

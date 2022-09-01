@@ -1,7 +1,18 @@
 - if tournament_organizer?(@tournament, current_user)
-  = link_to 'Start Tournament', start_tournament_path, class: 'btn btn-primary'
+  = link_to 'Start Tournament', start_tournament_path, class: 'btn btn-primary gray_button'
 
+%br
+  %br
 - if @tournament.sport == 'golf'
+
+  - if !user_already_joined?(@tournament, current_user)
+    = form_with(model: current_user.tournament_participating_users.build, local: true) do |f|
+      %div
+        = hidden_field_tag :tournament_id, @tournament.id
+      = f.submit 'Join tournament', class: 'btn btn-primary gray_button'
+  - else
+    = form_with(model: current_user.tournament_participating_users.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
+      = f.submit 'Leave tournament', class: 'btn btn-primary gray_button'
 
   %h2 Participants
   = will_paginate @paticipating_users
@@ -11,15 +22,18 @@
         = render 'users/user', user: user
   = will_paginate @paticipating_users
 
-  - if !user_already_joined?(@tournament, current_user)
-    = form_with(model: current_user.tournament_participating_users.build, local: true) do |f|
-      %div
-        = hidden_field_tag :tournament_id, @tournament.id
-      = f.submit 'Join tournament', class: 'btn btn-primary'
-  - else
-    = form_with(model: current_user.tournament_participating_users.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
-      = f.submit 'Leave tournament', class: 'btn btn-primary'
+
 - else
+
+  - if !current_user.team_id.nil?
+    - if !team_already_joined?(@tournament, get_team(current_user))
+      = form_with(model: get_team(current_user).tournament_participating_teams.build, local: true) do |f|
+        %div
+          = hidden_field_tag :tournament_id, @tournament.id
+        = f.submit 'Join tournament', class: 'btn btn-primary gray_button'
+    - else
+      = form_with(model: get_team(current_user).tournament_participating_teams.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
+        = f.submit 'Leave tournament', class: 'btn btn-primary gray_button'
 
   %h2 Participants
   = will_paginate @paticipating_teams
@@ -28,12 +42,3 @@
       %li
         = render 'teams/team', team: team
   = will_paginate @paticipating_teams
-
-  - if !team_already_joined?(@tournament, get_team(current_user))
-    = form_with(model: get_team(current_user).tournament_participating_teams.build, local: true) do |f|
-      %div
-        = hidden_field_tag :tournament_id, @tournament.id
-      = f.submit 'Join tournament', class: 'btn btn-primary'
-  - else
-    = form_with(model: get_team(current_user).tournament_participating_teams.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
-      = f.submit 'Leave tournament', class: 'btn btn-primary'

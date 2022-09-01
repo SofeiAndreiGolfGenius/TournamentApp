@@ -1,26 +1,28 @@
 %h1
   = @user.name
-
-%p
-  = link_to 'Delete', @user, method: 'delete',
-                             data: { confirm: 'Are you sure?' }
+  = image_tag('user_icon.jpeg', width: 45)
 
 - if !@user.team_id.nil?
-  %h3 Team
+  %h2 Team
   %div
-    = link_to @team.name, @team
+    = link_to @team.name, @team, class: 'item_for_index'
 
   - if !current_user?(@user) and @user.team_id == current_user.team_id and team_leader?(current_user)
-    = link_to 'Kick out of team', kick_out_user_path(@user),  class:'btn, btn-primary'
+    = link_to 'Kick out of team', kick_out_user_path(@user),  class:'btn btn-primary gray_button'
 - else
   - if @user.team_id.nil? and current_user?(@user)
-    = link_to 'Want to create a team?', create_team_path, class:'btn, btn-primary'
+    = link_to 'Want to create a team?', create_team_path, class:'btn btn-primary gray_button'
   - if !current_user?(@user) and @user.team_id.nil? and !current_user.team_id.nil? and !already_invited?(@user, get_team(current_user))
-    = link_to 'Invite to team', invite_to_team_invitation_path, class:'btn, btn-primary'
+    = link_to 'Invite to team', invite_to_team_invitation_path, class:'btn btn-primary gray_button'
 
   - if current_user?(@user)
     %h3 Team invitations
     = will_paginate @invitations
-    %ol
+    %ul
       = render @invitations
     = will_paginate @invitations
+
+
+%p
+  = link_to 'Delete Account', @user, method: 'delete', class:'right btn btn-primary gray_button',
+                             data: { confirm: 'Are you sure?' }

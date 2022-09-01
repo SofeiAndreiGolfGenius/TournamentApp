@@ -1,4 +1,8 @@
-= link_to 'Create a new Tournament', create_tournament_path
+%h1
+  Tournaments
+%p
+  = link_to 'Create a new Tournament', create_tournament_path, class: 'btn btn-primary gray_button'
+
 = will_paginate
 - @tournaments.each do |tournament|
   %li

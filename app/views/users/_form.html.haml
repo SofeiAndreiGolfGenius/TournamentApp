@@ -8,4 +8,4 @@
   = f.password_field :password, class: 'form-control'
   = f.label :password_confirmation, 'Confirmation'
   = f.password_field :password_confirmation, class: 'form-control'
-  = f.submit 'Sign Up', class: 'btn btn-primary'
+  = f.submit yield(:submit_button_text), class: 'btn btn-primary gray_button'

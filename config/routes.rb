@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   resources :matches, only: %i[update] do
     member do
       get :declare_winner
+      get :reset_score
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
