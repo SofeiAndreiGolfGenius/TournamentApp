@@ -70,10 +70,10 @@ class TeamsController < ApplicationController
   end
 
   def not_member_of_a_team
-    unless current_user.team_id.nil?
-      flash[:danger] = 'Your are already a part of this team'
-      team = get_team(current_user)
-      redirect_to team
-    end
+    return if current_user.team_id.nil?
+
+    flash[:danger] = 'Your are already a part of this team'
+    team = get_team(current_user)
+    redirect_to team
   end
 end

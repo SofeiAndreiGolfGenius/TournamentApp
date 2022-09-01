@@ -85,25 +85,25 @@ class TeamInvitationsController < ApplicationController
 
   def already_joined_your_team
     user = User.find(params[:user_id])
-    if user.team_id == current_user.id
-      flash[:success] = 'User already joined your team'
-      redirect_to(get_team(user))
-    end
+    return unless user.team_id == current_user.id
+
+    flash[:success] = 'User already joined your team'
+    redirect_to(get_team(user))
   end
 
   def already_joined_another_team
     user = User.find(params[:user_id])
-    unless user.team_id.nil?
-      flash[:danger] = 'User already joined another team'
-      redirect_to(user)
-    end
+    return if user.team_id.nil?
+
+    flash[:danger] = 'User already joined another team'
+    redirect_to(user)
   end
 
   def you_already_joined_a_team
     user = User.find(params[:id])
-    unless user.team_id.nil?
-      flash[:danger] = 'You already joined this team'
-      redirect_to(get_team(user))
-    end
+    return if user.team_id.nil?
+
+    flash[:danger] = 'You already joined this team'
+    redirect_to(get_team(user))
   end
 end

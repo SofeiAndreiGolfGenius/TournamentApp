@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Match < ApplicationRecord
   belongs_to :tournament
 
@@ -13,6 +15,6 @@ class Match < ApplicationRecord
   end
 
   def get_player(player_id)
-    return player = tournament.sport == 'golf' ? User.find(player_id) : Team.find(player_id)
+    tournament.sport == 'golf' ? User.find(player_id) : Team.find(player_id)
   end
 end

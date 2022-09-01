@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MatchesHelper
   def participated_in_match?(user, match)
     if !user.team_id.nil?

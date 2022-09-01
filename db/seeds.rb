@@ -89,16 +89,14 @@ end
 # Create 3 tournaments for each sport
 9.times do |n|
   if (n / 3).zero?
-    name = "#{(n%3+1).ordinalize} Golf Tournament"
+    name = "#{(n % 3 + 1).ordinalize} Golf Tournament"
     sport = 'golf'
+  elsif n / 3 == 1
+    name = "#{(n % 3 + 1).ordinalize} Football Tournament"
+    sport = 'football'
   else
-    if n / 3 == 1
-      name = "#{(n%3+1).ordinalize} Football Tournament"
-      sport = 'football'
-    else
-      name = "#{(n%3+1).ordinalize} Basketball Tournament"
-      sport = 'basketball'
-    end
+    name = "#{(n % 3 + 1).ordinalize} Basketball Tournament"
+    sport = 'basketball'
   end
   Tournament.create!(name: name,
                      sport: sport,

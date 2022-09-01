@@ -2,7 +2,7 @@
 
 class TournamentsController < ApplicationController
   before_action :logged_in_user
-  before_action :tournament_organizer, only: [:start, :destroy]
+  before_action :tournament_organizer, only: %i[start destroy]
   before_action :started_tournament, only: [:start]
   def new
     @tournament = Tournament.new
@@ -30,24 +30,24 @@ class TournamentsController < ApplicationController
     else
       @paticipating_teams = @tournament.teams.paginate(page: params[:page])
     end
-    if @tournament.started?
-      # check every round to see if it is finished
-      nr_rounds = @tournament.nr_of_rounds
-      if !@tournament.matches.last.winner_id.nil?
-        if @tournament.sport == 'golf'
-          winner = User.find(@tournament.matches.last.winner_id)
-        else
-          winner = User.find(@tournament.matches.last.winner_id)
-        end
-        @message = "Congratulations #{winner.name} !!!"
-      else
-        # interval = 1..nr_rounds-1
-        # (interval.first).downto(interval.last)
-        (1..nr_rounds - 1).reverse_each do |round|
-          if finished_round?(round)
-            start_next_round(round)
-            break
-          end
+    return unless @tournament.started?
+
+    # check every round to see if it is finished
+    nr_rounds = @tournament.nr_of_rounds
+    if !@tournament.matches.last.winner_id.nil?
+      winner = if @tournament.sport == 'golf'
+                 User.find(@tournament.matches.last.winner_id)
+               else
+                 Team.find(@tournament.matches.last.winner_id)
+               end
+      @message = "Congratulations #{winner.name} !!!"
+    else
+      # interval = 1..nr_rounds-1
+      # (interval.first).downto(interval.last)
+      (1..nr_rounds - 1).reverse_each do |round|
+        if finished_round?(round)
+          start_next_round(round)
+          break
         end
       end
     end

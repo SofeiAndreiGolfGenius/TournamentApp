@@ -37,7 +37,7 @@ module TournamentsHelper
         @tournament.matches.create!(player1_id: player1_id, player2_id: player2_id)
       end
     end
-    (nr_games_in_first_round..nr_games_in_total - 1).each do |i|
+    (nr_games_in_first_round..nr_games_in_total - 1).each do
       @tournament.matches.create!
     end
   end

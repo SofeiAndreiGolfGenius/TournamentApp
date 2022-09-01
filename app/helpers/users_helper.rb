@@ -8,7 +8,7 @@ module UsersHelper
 
   def get_team(user)
     team_id = user.team_id
-    team = Team.find(team_id)
+    Team.find(team_id)
   end
 
   def same_team?(user1, user2)

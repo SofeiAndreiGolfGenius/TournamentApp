@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TournamentParticipatingUsersController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy]
+  before_action :logged_in_user, only: %i[create destroy]
   before_action :full_tournament, only: [:create]
   before_action :started_tournament, only: [:create]
   def create
@@ -26,17 +26,17 @@ class TournamentParticipatingUsersController < ApplicationController
 
   def full_tournament
     tournament = Tournament.find(params[:tournament_id])
-    if tournament.users.size >= 64 || tournament.teams.size >= 64
-      flash[:danger] = 'Sorry, the tournament is full'
-      redirect_to(tournament)
-    end
+    return unless tournament.users.size >= 64 || tournament.teams.size >= 64
+
+    flash[:danger] = 'Sorry, the tournament is full'
+    redirect_to(tournament)
   end
 
   def started_tournament
     tournament = Tournament.find(params[:tournament_id])
-    if tournament.started?
-      flash[:danger] = 'Sorry, the tournament has already started'
-      redirect_to(tournament)
-    end
+    return unless tournament.started?
+
+    flash[:danger] = 'Sorry, the tournament has already started'
+    redirect_to(tournament)
   end
 end

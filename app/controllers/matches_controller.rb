@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchesController < ApplicationController
   before_action :logged_in_user
   before_action :tournament_organizer, only: %i[declare_winner reset_score]
@@ -27,11 +29,11 @@ class MatchesController < ApplicationController
       @match.update_attribute(:winner_id, @match.player1_id)
     else
       tournament = @match.tournament
-      if tournament.sport == 'golf'
-        winner_id = @match.player1_score < @match.player2_score ? @match.player1_id : @match.player2_id
-      else
-        winner_id = @match.player1_score > @match.player2_score ? @match.player1_id : @match.player2_id
-      end
+      winner_id = if tournament.sport == 'golf'
+                    @match.player1_score < @match.player2_score ? @match.player1_id : @match.player2_id
+                  else
+                    @match.player1_score > @match.player2_score ? @match.player1_id : @match.player2_id
+                  end
       @match.update_attribute(:winner_id, winner_id)
       respond_to do |format|
         format.html { redirect_to tournament }
@@ -69,9 +71,9 @@ class MatchesController < ApplicationController
   def score_already_declared
     match = Match.find(params[:id])
     tournament = match.tournament
-    unless match.player1_score.nil? && match.player2_score.nil?
-      flash[:danger] = 'Score has already been declared'
-      redirect_to(tournament)
-    end
+    return if match.player1_score.nil? && match.player2_score.nil?
+
+    flash[:danger] = 'Score has already been declared'
+    redirect_to(tournament)
   end
 end

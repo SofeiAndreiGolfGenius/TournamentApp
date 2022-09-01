@@ -27,7 +27,7 @@ class User < ApplicationRecord
   end
 
   def join_team(team_id)
-    self.update_attribute(:team_id, team_id)
+    update_attribute(:team_id, team_id)
   end
 
   def ask_to_join(team)
