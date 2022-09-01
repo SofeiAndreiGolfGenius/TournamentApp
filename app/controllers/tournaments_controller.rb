@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TournamentsController < ApplicationController
-  before_action :logged_in_user, only: [:start, :destroy]
+  before_action :logged_in_user
   before_action :tournament_organizer, only: [:start, :destroy]
   before_action :started_tournament, only: [:start]
   def new
@@ -20,7 +20,7 @@ class TournamentsController < ApplicationController
   end
 
   def index
-    @tournaments = Tournament.all.order(sport: :asc, created_at: :desc).paginate(page: params[:page], per_page: 10)
+    @tournaments = Tournament.all.order(sport: :asc, created_at: :desc).paginate(page: params[:page], per_page: 20)
   end
 
   def show
@@ -30,22 +30,24 @@ class TournamentsController < ApplicationController
     else
       @paticipating_teams = @tournament.teams.paginate(page: params[:page])
     end
-    # check every round to see if it is finished
-    nr_rounds = @tournament.nr_of_rounds
-    if !@tournament.matches.last.winner_id.nil?
-      if @tournament.sport == 'golf'
-        winner = User.find(@tournament.matches.last.winner_id)
+    if @tournament.started?
+      # check every round to see if it is finished
+      nr_rounds = @tournament.nr_of_rounds
+      if !@tournament.matches.last.winner_id.nil?
+        if @tournament.sport == 'golf'
+          winner = User.find(@tournament.matches.last.winner_id)
+        else
+          winner = User.find(@tournament.matches.last.winner_id)
+        end
+        @message = "Congratulations #{winner.name} !!!"
       else
-        winner = User.find(@tournament.matches.last.winner_id)
-      end
-      @message = "Congratulations #{winner.name} !!!"
-    else
-      # interval = 1..nr_rounds-1
-      # (interval.first).downto(interval.last)
-      (1..nr_rounds - 1).reverse_each do |round|
-        if finished_round?(round)
-          start_next_round(round)
-          break
+        # interval = 1..nr_rounds-1
+        # (interval.first).downto(interval.last)
+        (1..nr_rounds - 1).reverse_each do |round|
+          if finished_round?(round)
+            start_next_round(round)
+            break
+          end
         end
       end
     end

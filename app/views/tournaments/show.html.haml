@@ -2,11 +2,14 @@
   = @tournament.name
 %h2
   = @tournament.sport
-- if @tournament.organizer_id == current_user.id
-  = link_to 'Delete', @tournament, method: 'delete',
-                             data: { confirm: 'Are you sure?' }
 %br
 - if !@tournament.started
   = render 'not_started_tournament'
 - else
   = render 'started_tournament'
+
+
+- if @tournament.organizer_id == current_user.id
+  %div.right
+    = link_to 'Delete Tournament', @tournament, method: 'delete', class: 'btn btn-primary gray_button',
+                               data: { confirm: 'Are you sure?' }

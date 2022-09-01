@@ -1,7 +1,5 @@
 class Match < ApplicationRecord
   belongs_to :tournament
-  belongs_to :player1, class_name: 'User', optional: true
-  belongs_to :player2, class_name: 'User', optional: true
 
   validates :tournament_id, presence: true
   validates_with ValidScoreValidator
@@ -12,5 +10,9 @@ class Match < ApplicationRecord
       matches = get_matches_from_round(i)
       return i if matches.include? self
     end
+  end
+
+  def get_player(player_id)
+    return player = tournament.sport == 'golf' ? User.find(player_id) : Team.find(player_id)
   end
 end

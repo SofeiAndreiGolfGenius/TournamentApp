@@ -1,7 +1,7 @@
 %header.navbar.navbar-fixed-top.navbar-inverse
   %div.container
-    = link_to 'Tournaments App', root_path, id:'logo'
     %nav
+      = link_to 'Tournaments App', root_path, id:'logo', class: 'btn nice_gray', style: 'font-size: 30px'
       %div.navbar-header
         %button.navbar-toggle.collapsed{:type => "button", :'data-bs-toggle' => 'collapse', :'data-bs-target' => '#bs-example-navbar-collapse-1'}
           %span{:class => 'sr-only'} Toggle navigation
@@ -24,11 +24,11 @@
                 %b{:class => 'caret'}
               %ul.dropdown-menu
                 %li
-                  = link_to 'Profile', current_user
+                  = link_to 'Profile', current_user, style: 'color: gray'
                 %li
-                  = link_to 'Settings', edit_user_path(current_user)
+                  = link_to 'Settings', edit_user_path(current_user), style: 'color: gray'
                 %li
-                  = link_to 'Log Out', logout_path, method: 'delete'
+                  = link_to 'Log Out', logout_path, method: 'delete', style: 'color: gray'
           - else
             %li
               = link_to 'Login', login_path
