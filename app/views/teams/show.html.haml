@@ -1,6 +1,8 @@
 %h1
   = @team.name
   = image_tag('team_icon.jpeg', width: 45)
+- if current_user.id == @team.leader_id
+  = link_to 'Settings', edit_team_path(@team), class:'btn btn-primary gray_button'
 %h2
 - if current_user.team_id.nil? && !already_invited?(current_user, @team)
   = link_to 'Ask to join team', ask_to_join_team_invitation_path, class:'btn btn-primary gray_button'

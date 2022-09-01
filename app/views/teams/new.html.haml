@@ -1,5 +1,2 @@
-= form_with(model: @team, local: true) do |f|
-  = render 'shared/error_messages', object: @team
-  = f.label :name
-  = f.text_field :name, class: 'form-control'
-  = f.submit 'Create team', class: 'btn btn-primary'
+- provide(:submit_button_text, "Create Team")
+= render 'teams/form'

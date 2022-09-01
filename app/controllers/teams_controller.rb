@@ -2,8 +2,8 @@
 
 class TeamsController < ApplicationController
   before_action :logged_in_user
-  before_action :current_team_leader, only: [:destroy]
-  before_action :not_member_of_a_team, only: [:create]
+  before_action :current_team_leader, only: %i[destroy edit update]
+  before_action :not_member_of_a_team, only: %i[new create]
   def new
     @team = Team.new
   end
@@ -27,6 +27,20 @@ class TeamsController < ApplicationController
     @leader = User.find(@team.leader_id)
     @members = @team.members.where.not(id: @team.leader_id).paginate(page: params[:page])
     @invitations = @team.team_invitations.where(created_by: 'team').paginate(page: params[:page])
+  end
+
+  def edit
+    @team = Team.find(params[:id])
+  end
+
+  def update
+    @team = Team.find(params[:id])
+    if @team.update(team_params)
+      flash[:success] = 'Changes saved successfully'
+      redirect_to @team
+    else
+      render 'edit'
+    end
   end
 
   def index
