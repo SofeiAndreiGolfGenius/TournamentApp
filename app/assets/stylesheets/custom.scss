@@ -64,3 +64,31 @@ body{
 .team{
   color: #999999;
 }
+.pagination{
+  font-size: 20px;
+  text-align: center;
+  .disabled{
+    color: #aaaaaa
+  }
+  .current {
+    font-style: normal;
+    font-weight: bold;
+    background-color: #aaaaaa;
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    line-height: 1.5;
+    border-radius: 1em;
+  }
+  a {
+    color: #2E2F30;
+    &:hover{
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    &:focus {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}
