@@ -24,7 +24,7 @@ vs
             = f.label :Player2
             = f.number_field :player2_score, :min => 0, class: 'form-control'
         %br
-        = f.submit 'Declare Score', data: { confirm: 'Are you sure?' }, class: 'btn-primary'
+        = f.submit 'Declare Score', data: { confirm: 'Are you sure?' }, class: 'btn-primary gray_button'
   - else
     %div.score
       = match.player1_score
