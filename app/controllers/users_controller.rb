@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :logged_in_user, only: %i[edit update destroy team_invitations show index]
+  before_action :admin_user_or_current, only: [:destroy]
   before_action :correct_user, only: %i[edit update]
   before_action :same_team, only: [:kick_out_of_team]
   before_action :team_leader, only: [:kick_out_of_team]
@@ -17,6 +18,16 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       render 'new'
+    end
+  end
+
+  def search
+    @user = User.find_by_name(params[:name])
+    if @user.nil?
+      flash[:danger] = 'User not found'
+      redirect_to users_path
+    else
+      redirect_to @user
     end
   end
 
@@ -96,5 +107,10 @@ class UsersController < ApplicationController
   def same_team
     user = User.find(params[:id])
     redirect_to(user) unless same_team?(current_user, user)
+  end
+
+  def admin_user_or_current
+    user = User.find(params[:id])
+    redirect_to(root_url) unless current_user.admin? || current_user.id == user.id
   end
 end

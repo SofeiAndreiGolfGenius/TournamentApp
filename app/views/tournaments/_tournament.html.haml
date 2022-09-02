@@ -3,7 +3,7 @@
   - if !tournament.matches.last.winner_id.nil?
     = ' -> (Tournament finished, click to see who won it!)'
   - else
-    - if user_already_joined?(tournament, current_user) || team_already_joined?(tournament, get_team(current_user))
+    - if user_already_joined?(tournament, current_user) || (!current_user.team_id.nil?  && team_already_joined?(tournament, get_team(current_user)))
       = ' -> (Check if you have any matches)'
 - else
   - if tournament_organizer?(tournament, current_user) && !tournament.started? && (tournament.users.size >=5 || tournament.teams.size >= 5)

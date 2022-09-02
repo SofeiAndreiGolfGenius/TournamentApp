@@ -1,24 +1,29 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'sessions/new'
-  get 'sessions/create'
-  get 'sessions/destroy'
+  root 'static_pages#home'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy'
-  get '/create_team', to: 'teams#new'
-  get '/create_tournament', to: 'tournaments#new'
-  root 'static_pages#home'
+  delete '/logout', to: 'sessions#destroy'
+  resources :sessions, only: %i[new create destroy] do
+    get 'login', action: 'create', as: 'login'
+  end
   resources :users do
     member do
       get 'leave', action: 'leave_team', as: 'leave'
       get 'kick_out', action: 'kick_out_of_team', as: 'kick_out'
       get :team_invitations
     end
+    collection do
+      get :search
+    end
   end
   resources :teams do
+    collection do
+      get 'create', action: 'new', as: 'create'
+      get :search
+    end
     member do
       get :invited_to_team
     end
@@ -34,6 +39,9 @@ Rails.application.routes.draw do
     end
   end
   resources :tournaments do
+    collection do
+      get 'create', action: 'new', as: 'create'
+    end
     member do
       get :start
     end

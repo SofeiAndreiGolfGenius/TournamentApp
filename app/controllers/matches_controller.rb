@@ -4,9 +4,9 @@ class MatchesController < ApplicationController
   before_action :logged_in_user
   before_action :tournament_organizer, only: %i[declare_winner reset_score]
   before_action :match_participant_or_organizer, only: [:update]
-  before_action :score_already_declared, only: [:update]
+  before_action :score_already_declared, only: %i[update]
   def update
-    @match = Match.find(params[:id])
+    @match = Match.includes(:tournament).find(params[:id])
     tournament = @match.tournament
     if @match.update(match_params)
       message1 = 'Score declared successfully'
@@ -24,9 +24,11 @@ class MatchesController < ApplicationController
   end
 
   def declare_winner
-    @match = Match.find(params[:id])
+    @match = Match.includes(:tournament).find(params[:id])
     if @match.player2_id.nil? && !@match.player1_id.nil?
       @match.update_attribute(:winner_id, @match.player1_id)
+    elsif @match.player1_id.nil? && !@match.player2_id.nil?
+      @match.update_attribute(:winner_id, @match.player2_id)
     else
       tournament = @match.tournament
       winner_id = if tournament.sport == 'golf'
@@ -43,7 +45,7 @@ class MatchesController < ApplicationController
   end
 
   def reset_score
-    @match = Match.find(params[:id])
+    @match = Match.includes(:tournament).find(params[:id])
     @match.update!(player1_score: nil,
                    player2_score: nil)
     redirect_to @match.tournament
@@ -56,13 +58,13 @@ class MatchesController < ApplicationController
   end
 
   def tournament_organizer
-    match = Match.find(params[:id])
+    match = Match.includes(:tournament).find(params[:id])
     tournament = match.tournament
     redirect_to(tournament) unless tournament.organizer_id == current_user.id
   end
 
   def match_participant_or_organizer
-    match = Match.find(params[:id])
+    match = Match.includes(:tournament).find(params[:id])
     tournament = match.tournament
     redirect_to(tournament) unless tournament.organizer_id == current_user.id ||
                                    participated_in_match?(current_user, match)
@@ -70,9 +72,9 @@ class MatchesController < ApplicationController
 
   def score_already_declared
     match = Match.find(params[:id])
-    tournament = match.tournament
     return if match.player1_score.nil? && match.player2_score.nil?
 
+    tournament = match.tournament
     flash[:danger] = 'Score has already been declared'
     redirect_to(tournament)
   end

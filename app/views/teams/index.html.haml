@@ -1,8 +1,14 @@
 %h1
   Teams
   = image_tag('team_icon.jpeg', width: 45)
+
+%div
+  - provide(:model_search_path, search_teams_path)
+  = render 'shared/search_by_name'
+
 - if current_user.team_id.nil?
-  = link_to 'Want to create a team?', create_team_path, class:'btn, btn-primary'
+  = link_to 'Want to create a team?', create_teams_path, class:'btn btn-primary gray_button'
+
 = will_paginate
 - @teams.each do |team|
   %li

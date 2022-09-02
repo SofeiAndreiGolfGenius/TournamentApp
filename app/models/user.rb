@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_one :team, dependent: :destroy
+  has_one :team
 
   has_many :team_invitations, dependent: :destroy
   has_many :teams, through: :team_invitations
 
   has_many :tournament_participating_users, dependent: :destroy
   has_many :tournaments, through: :tournament_participating_users, source: :tournament
-
-  has_many :matches, dependent: :nullify
 
   before_save { self.email = email.downcase }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]\d]+)*\.[a-z]+\z/i

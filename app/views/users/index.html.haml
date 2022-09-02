@@ -1,6 +1,11 @@
 %h1
   Users
   = image_tag('user_icon.jpeg', width: 45)
+
+%div
+  - provide(:model_search_path, search_users_path)
+  = render 'shared/search_by_name'
+
 = will_paginate
 %ul
   - @users.each do |user|

@@ -22,6 +22,16 @@ class TeamsController < ApplicationController
     end
   end
 
+  def search
+    @team = Team.find_by_name(params[:name])
+    if @team.nil?
+      flash[:danger] = 'Team not found'
+      redirect_to teams_path
+    else
+      redirect_to @team
+    end
+  end
+
   def show
     @team = Team.find(params[:id])
     @leader = User.find(@team.leader_id)
@@ -72,7 +82,7 @@ class TeamsController < ApplicationController
   def not_member_of_a_team
     return if current_user.team_id.nil?
 
-    flash[:danger] = 'Your are already a part of this team'
+    flash[:danger] = 'You already joined this team'
     team = get_team(current_user)
     redirect_to team
   end

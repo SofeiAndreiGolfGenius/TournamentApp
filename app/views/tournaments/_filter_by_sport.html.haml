@@ -1,0 +1,8 @@
+= form_with method: 'get', url: tournaments_path do |f|
+  - Tournament::SPORTS.each do |sport|
+    = f.label sport, class: 'checkbox' do
+      = f.check_box sport, { checked: @filters.include?(sport) }
+    = sport.capitalize
+    %br
+  = f.submit 'Filter', class: 'btn btn-primary gray_button'
+  = link_to 'Reset filters', tournaments_path, class: 'btn btn-primary gray_button'

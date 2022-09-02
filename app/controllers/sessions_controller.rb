@@ -16,11 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    puts 'not yet'
-    if logged_in?
-      puts 'Yes, logged in'
-      log_out
-    end
+    log_out if logged_in?
     redirect_to root_path
   end
 end

@@ -1,10 +1,14 @@
 %h1
   Tournaments
 %p
-  = link_to 'Create a new Tournament', create_tournament_path, class: 'btn btn-primary gray_button'
+  = link_to 'Create a new Tournament', create_tournaments_path, class: 'btn btn-primary gray_button'
 
-= will_paginate
-- @tournaments.each do |tournament|
-  %li
-    = render tournament
-= will_paginate
+%div.right
+  = render 'filter_by_sport'
+
+%div
+  = will_paginate
+  - @tournaments.each do |tournament|
+    %li
+      = render tournament
+  = will_paginate

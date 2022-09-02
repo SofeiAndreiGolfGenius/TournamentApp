@@ -1,16 +1,22 @@
-- if match.winner_id == match.player1_id
-  %div.winner
-    = !match.player1_id.nil? ? match.get_player(match.player1_id).name : '-'
+- if !match.player1_id.nil?
+  - if match.player1_id == match.winner_id
+    = render partial: 'matches/player', locals: {player: match.get_player(match.player1_id), winner: true}
+  - else
+    = render partial: 'matches/player', locals: {player: match.get_player(match.player1_id), winner: false}
 - else
-  %div
-    = !match.player1_id.nil? ? match.get_player(match.player1_id).name : '-'
-vs
-- if match.winner_id == match.player2_id
-  %div.winner
-    = !match.player2_id.nil? ? match.get_player(match.player2_id).name : '-'
+  %div.item_for_index
+    = '-'
+%div.item_for_index
+  vs
+- if !match.player2_id.nil?
+  - if match.player2_id == match.winner_id
+    = render partial: 'matches/player', locals: {player: match.get_player(match.player2_id), winner: true}
+  - else
+    = render partial: 'matches/player', locals: {player: match.get_player(match.player2_id), winner: false}
 - else
-  %div
-    = !match.player2_id.nil? ? match.get_player(match.player2_id).name : '-'
+  %div.item_for_index
+    = '-'
+
 - if !match.player1_id.nil? && !match.player2_id.nil?
   - if (match.player1_score.nil? && match.player2_score.nil?) && match.winner_id.nil?
     - if participated_in_match?(current_user, match) || tournament_organizer?(@tournament, current_user)
@@ -24,7 +30,7 @@ vs
             = f.label :Player2
             = f.number_field :player2_score, :min => 0, class: 'form-control'
         %br
-        = f.submit 'Declare Score', data: { confirm: 'Are you sure?' }, class: 'btn-primary gray_button'
+        = f.submit 'Declare Score', data: { confirm: 'Are you sure?' }, class: 'btn btn-primary gray_button'
   - else
     %div.score
       = match.player1_score
@@ -33,8 +39,7 @@ vs
     - if match.winner_id.nil?
       %br
       - if tournament_organizer?(@tournament, current_user)
-        = link_to 'Confirm score', declare_winner_match_path(id: match.id), class: 'btn-primary'
-        |
-        = link_to 'Reject score', reset_score_match_path(id: match.id), class: 'btn-primary'
+        = link_to 'Confirm Score', declare_winner_match_path(id: match.id), class: 'btn btn-primary gray_button'
+        = link_to 'Reject Score', reset_score_match_path(id: match.id), class: 'btn btn-primary gray_button'
       - else
         Not yet confirmed score
