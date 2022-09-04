@@ -10,6 +10,9 @@ class CreateMatches < ActiveRecord::Migration[7.0]
       t.integer :player2_score
       t.integer :winner_id
 
+      t.string :sport
+      t.boolean :team_sport
+
       t.timestamps
     end
     add_index :matches, :tournament_id

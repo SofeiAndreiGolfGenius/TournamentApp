@@ -9,8 +9,9 @@
   - if tournament_organizer?(tournament, current_user) && !tournament.started? && (tournament.users.size >=5 || tournament.teams.size >= 5)
     = ' -> (You can start this tournament if you want)'
   - else
-    - if tournament.sport == 'golf' && !user_already_joined?(tournament, current_user)
-      = ' -> (Tournament not started, you can still join)'
+    - if tournament.sport == 'golf'
+      - if !user_already_joined?(tournament, current_user)
+        = ' -> (Tournament not started, you can still join)'
     - else
       - if !current_user.team_id.nil? && !team_already_joined?(tournament, get_team(current_user))
         = ' -> (Tournament not started, you can still join)'

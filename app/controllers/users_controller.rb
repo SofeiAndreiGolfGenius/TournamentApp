@@ -55,7 +55,42 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id]).destroy
+    @user = User.find(params[:id])
+
+    matches = Match.all.where("player1_id = #{@user.id} or player2_id = #{@user.id}", team_sport: false)
+    matches.each do |match|
+      if match.player1_id == @user.id
+        match.update_attribute(:player1_id, nil)
+      else
+        match.update_attribute(:player2_id, nil)
+      end
+      match.declare_winner
+    end
+
+    unless @user.team_id.nil?
+      team = Team.includes(:members).find(@user.team_id)
+      if team.leader_id == @user.id
+        if team.members.size > 1
+          team.update_attribute(:leader_id, team.members[1].id)
+        else
+          matches = Match.all.where("player1_id = #{team.id} or player2_id = #{team.id}", team_sport: true)
+          matches.each do |match|
+            if match.player1_id == team.id
+              match.update_attribute(:player1_id, nil)
+            else
+              match.update_attribute(:player2_id, nil)
+            end
+            match.declare_winner
+          end
+          team.destroy!
+        end
+      end
+    end
+
+    if @user.id == current_user.id
+      log_out
+    end
+    @user.destroy!
     flash[:success] = 'Deleted user successfully'
     redirect_to root_path
   end

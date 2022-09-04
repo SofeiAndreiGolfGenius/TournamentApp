@@ -63,7 +63,20 @@ class TeamsController < ApplicationController
   end
 
   def destroy
-    @team = Team.find(params[:id]).destroy
+    @team = Team.find(params[:id])
+
+    # put as nil in matches they take part in
+    matches = Match.all.where("player1_id = #{@team.id} or player2_id = #{@team.id}", team_sport: true)
+    matches.each do |match|
+      if match.player1_id == @team.id
+        match.update_attribute(:player1_id, nil)
+      else
+        match.update_attribute(:player2_id, nil)
+      end
+      match.declare_winner
+    end
+
+    @team.destroy!
     flash[:success] = 'Deleted team successfully'
     redirect_to root_path
   end

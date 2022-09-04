@@ -17,4 +17,17 @@ class Match < ApplicationRecord
   def get_player(player_id)
     tournament.sport == 'golf' ? User.find(player_id) : Team.find(player_id)
   end
+
+  def declare_winner
+    winner_id = if player1_id.nil?
+                  player2_id
+                elsif player2_id.nil?
+                  player1_id
+                elsif sport == 'golf'
+                  player1_score < player2_score ? player1_id : player2_id
+                else
+                  player1_score > player2_score ? player1_id : player2_id
+                end
+    update_attribute(:winner_id, winner_id)
+  end
 end

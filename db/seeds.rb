@@ -100,6 +100,7 @@ end
   end
   Tournament.create!(name: name,
                      sport: sport,
+                     team_sport: sport != 'golf',
                      organizer_id: 1,
                      started: false)
 end

@@ -25,23 +25,8 @@ class MatchesController < ApplicationController
 
   def declare_winner
     @match = Match.includes(:tournament).find(params[:id])
-    if @match.player2_id.nil? && !@match.player1_id.nil?
-      @match.update_attribute(:winner_id, @match.player1_id)
-    elsif @match.player1_id.nil? && !@match.player2_id.nil?
-      @match.update_attribute(:winner_id, @match.player2_id)
-    else
-      tournament = @match.tournament
-      winner_id = if tournament.sport == 'golf'
-                    @match.player1_score < @match.player2_score ? @match.player1_id : @match.player2_id
-                  else
-                    @match.player1_score > @match.player2_score ? @match.player1_id : @match.player2_id
-                  end
-      @match.update_attribute(:winner_id, winner_id)
-      respond_to do |format|
-        format.html { redirect_to tournament }
-        format.js
-      end
-    end
+    @match.declare_winner
+    redirect_to @match.tournament
   end
 
   def reset_score

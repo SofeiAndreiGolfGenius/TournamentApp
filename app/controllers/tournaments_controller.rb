@@ -10,6 +10,7 @@ class TournamentsController < ApplicationController
 
   def create
     @tournament = Tournament.new(tournament_params)
+    @tournament.team_sport = params[:sport] != 'golf'
     @tournament.organizer_id = current_user.id
     if @tournament.save
       flash[:success] = 'Tournament created successfully'
@@ -29,7 +30,7 @@ class TournamentsController < ApplicationController
   end
 
   def show
-    @tournament = Tournament.find(params[:id])
+    @tournament = Tournament.includes(:matches).find(params[:id])
     if @tournament.sport == 'golf'
       @paticipating_users = @tournament.users.paginate(page: params[:page])
     else
@@ -37,24 +38,25 @@ class TournamentsController < ApplicationController
     end
     return unless @tournament.started?
 
-    # check every round to see if it is finished
-    nr_rounds = @tournament.nr_of_rounds
-    if !@tournament.matches.last.winner_id.nil?
-      winner = if @tournament.sport == 'golf'
+    if @tournament.winner_id.nil?
+      last_match = @tournament.matches.last
+      @tournament.update_attribute(:winner_id, last_match.winner_id) unless last_match.winner_id.nil?
+    end
+
+    if @tournament.winner_id.nil?
+      current_round = @tournament.round
+      if finished_round?(current_round)
+        start_next_round(current_round)
+        @tournament.update(round: current_round + 1)
+      end
+    end
+    unless @tournament.winner_id.nil?
+      winner = if !@tournament.team_sport?
                  User.find(@tournament.matches.last.winner_id)
                else
                  Team.find(@tournament.matches.last.winner_id)
                end
       @message = "Congratulations #{winner.name} !!!"
-    else
-      # interval = 1..nr_rounds-1
-      # (interval.first).downto(interval.last)
-      (1..nr_rounds - 1).reverse_each do |round|
-        if finished_round?(round)
-          start_next_round(round)
-          break
-        end
-      end
     end
   end
 
@@ -71,7 +73,7 @@ class TournamentsController < ApplicationController
       flash[:danger] = 'Not enough participants to start the tournament'
     else
       flash[:success] = 'Tournament started, good luck everyone!'
-      @tournament.update(started: true)
+      @tournament.update(started: true, round: 1, nr_of_rounds: nr_of_rounds)
       initialize_matches
     end
     redirect_to @tournament
@@ -95,11 +97,12 @@ class TournamentsController < ApplicationController
 
   def finished_round?(round_number)
     matches = get_matches_from_round(round_number)
-    ok = true
+
     matches.each do |match|
-      ok &&= !match.winner_id.nil?
+      return false if match.winner_id.nil? && !match.player1_id.nil? && !match.player2_id.nil?
+      # bad when there are 2 players and winner_id is null
     end
-    ok
+    true
   end
 
   def start_next_round(current_round_number)
@@ -108,6 +111,7 @@ class TournamentsController < ApplicationController
     (0..new_matches.size - 1).each do |i|
       new_matches[i].update!(player1_id: finished_matches[i * 2].winner_id,
                              player2_id: finished_matches[i * 2 + 1].winner_id)
+      new_matches[i].declare_winner if new_matches[i].player1_id.nil? || new_matches[i].player2_id.nil?
     end
   end
 end

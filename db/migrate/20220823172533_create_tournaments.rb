@@ -5,8 +5,12 @@ class CreateTournaments < ActiveRecord::Migration[7.0]
     create_table :tournaments do |t|
       t.string :name
       t.string :sport
-      t.references :organizer, foreign_key: { to_table: :users }
+      t.boolean :team_sport
+      t.integer :round
+      t.integer :nr_of_rounds
 
+      t.references :organizer, foreign_key: { to_table: :users }
+      t.integer :winner_id
       t.timestamps
     end
     add_index :tournaments, %i[created_at sport]

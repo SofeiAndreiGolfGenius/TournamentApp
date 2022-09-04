@@ -22,9 +22,14 @@ module TournamentsHelper
     end
   end
 
+  def nr_of_rounds
+    nr_participants = @tournament.team_sport ? @tournament.teams.size : @tournament.users.size
+    log2_integer = Math.log2(nr_participants).to_i
+    Math.log2(nr_participants) == log2_integer ? log2_integer : log2_integer + 1
+  end
+
   def initialize_matches
-    puts @tournament.sport
-    @randomized_participants = @tournament.sport == 'golf' ? @tournament.users.shuffle : @tournament.teams.shuffle
+    @randomized_participants = !@tournament.team_sport ? @tournament.users.shuffle : @tournament.teams.shuffle
     nr_games_in_first_round = 2**(@tournament.nr_of_rounds - 1)
     nr_games_in_total = 2**@tournament.nr_of_rounds - 1
     (0..nr_games_in_first_round - 1).each do |i|
@@ -32,13 +37,15 @@ module TournamentsHelper
       adversary_id = i + nr_games_in_first_round
       player2_id = adversary_id < @randomized_participants.size ? @randomized_participants[adversary_id].id : nil
       if player2_id.nil?
-        @tournament.matches.create!(player1_id: player1_id, player2_id: player2_id, winner_id: player1_id)
+        @tournament.matches.create!(player1_id: player1_id, player2_id: player2_id, winner_id: player1_id,
+                                    sport: @tournament.sport, team_sport: @tournament.team_sport)
       else
-        @tournament.matches.create!(player1_id: player1_id, player2_id: player2_id)
+        @tournament.matches.create!(player1_id: player1_id, player2_id: player2_id,
+                                    sport: @tournament.sport, team_sport: @tournament.team_sport)
       end
     end
     (nr_games_in_first_round..nr_games_in_total - 1).each do
-      @tournament.matches.create!
+      @tournament.matches.create!(sport: @tournament.sport, team_sport: @tournament.team_sport)
     end
   end
 

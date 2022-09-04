@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       get :search
     end
     member do
+      delete 'delete', action: 'destroy', as: 'delete'
       get :invited_to_team
     end
   end
