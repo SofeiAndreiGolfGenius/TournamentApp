@@ -26,7 +26,9 @@ class TournamentsController < ApplicationController
       @filters << sport unless params[sport].to_i.zero?
     end
     @filters = Tournament::SPORTS if @filters.empty?
-    @tournaments = Tournament.where('sport IN (?)', @filters).order(sport: :asc, created_at: :desc).paginate(page: params[:page], per_page: 20)
+    @tournaments = Tournament.where('sport IN (?)', @filters).order(sport: :asc, created_at: :desc).paginate(
+      page: params[:page], per_page: 20
+    )
   end
 
   def show

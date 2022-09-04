@@ -87,9 +87,7 @@ class UsersController < ApplicationController
       end
     end
 
-    if @user.id == current_user.id
-      log_out
-    end
+    log_out if @user.id == current_user.id
     @user.destroy!
     flash[:success] = 'Deleted user successfully'
     redirect_to root_path
