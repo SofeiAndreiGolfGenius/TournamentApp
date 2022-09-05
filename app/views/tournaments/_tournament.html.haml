@@ -13,5 +13,5 @@
       - if !user_already_joined?(tournament, current_user)
         = ' -> (Tournament not started, you can still join)'
     - else
-      - if !current_user.team_id.nil? && !team_already_joined?(tournament, get_team(current_user))
+      - if !current_user.team_id.nil? && !team_already_joined?(tournament, get_team(current_user)) && get_team(current_user).leader_id == current_user.id
         = ' -> (Tournament not started, you can still join)'

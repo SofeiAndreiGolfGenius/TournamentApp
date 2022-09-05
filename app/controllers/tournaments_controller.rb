@@ -33,32 +33,21 @@ class TournamentsController < ApplicationController
 
   def show
     @tournament = Tournament.includes(:matches).find(params[:id])
-    if @tournament.sport == 'golf'
-      @paticipating_users = @tournament.users.paginate(page: params[:page])
-    else
-      @paticipating_teams = @tournament.teams.paginate(page: params[:page])
-    end
+    @participants = take_participants
     return unless @tournament.started?
-
-    if @tournament.winner_id.nil?
-      last_match = @tournament.matches.last
-      @tournament.update_attribute(:winner_id, last_match.winner_id) unless last_match.winner_id.nil?
-    end
 
     if @tournament.winner_id.nil?
       current_round = @tournament.round
       if finished_round?(current_round)
-        start_next_round(current_round)
-        @tournament.update(round: current_round + 1)
+        if current_round == @tournament.nr_of_rounds
+          @tournament.update_attribute(:winner_id, @tournament.matches.last.winner_id)
+          @message = "Congratulations #{tournament_winner.name} !!!"
+        else
+          start_next_round(current_round)
+        end
       end
-    end
-    unless @tournament.winner_id.nil?
-      winner = if !@tournament.team_sport?
-                 User.find(@tournament.matches.last.winner_id)
-               else
-                 Team.find(@tournament.matches.last.winner_id)
-               end
-      @message = "Congratulations #{winner.name} !!!"
+    else
+      @message = "Congratulations #{tournament_winner.name} !!!"
     end
   end
 
@@ -75,8 +64,7 @@ class TournamentsController < ApplicationController
       flash[:danger] = Constants::MESSAGES['TournamentNotEnoughPlayers']
     else
       flash[:success] = Constants::MESSAGES['StartTournamentMessage']
-      @tournament.update(started: true, round: 1, nr_of_rounds: nr_of_rounds)
-      initialize_matches
+      start_tournament
     end
     redirect_to @tournament
   end
@@ -107,13 +95,14 @@ class TournamentsController < ApplicationController
     true
   end
 
-  def start_next_round(current_round_number)
-    finished_matches = get_matches_from_round(current_round_number)
-    new_matches = get_matches_from_round(current_round_number + 1)
+  def start_next_round(current_round)
+    finished_matches = get_matches_from_round(current_round)
+    new_matches = get_matches_from_round(current_round + 1)
     (0..new_matches.size - 1).each do |i|
       new_matches[i].update!(player1_id: finished_matches[i * 2].winner_id,
                              player2_id: finished_matches[i * 2 + 1].winner_id)
       new_matches[i].declare_winner if new_matches[i].player1_id.nil? || new_matches[i].player2_id.nil?
     end
+    @tournament.update(round: current_round + 1)
   end
 end

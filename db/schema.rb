@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
   enable_extension 'plpgsql'
 
   create_table 'matches', force: :cascade do |t|
-    t.integer 'tournament_id'
+    t.bigint 'tournament_id'
     t.integer 'player1_id'
     t.integer 'player2_id'
     t.integer 'player1_score'
@@ -27,15 +27,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
     t.boolean 'team_sport'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['id'], name: 'index_matches_on_id'
     t.index %w[tournament_id player1_id player2_id],
             name: 'index_matches_on_tournament_id_and_player1_id_and_player2_id', unique: true
     t.index ['tournament_id'], name: 'index_matches_on_tournament_id'
   end
 
   create_table 'team_invitations', force: :cascade do |t|
-    t.integer 'team_id'
-    t.integer 'user_id'
+    t.bigint 'team_id'
+    t.bigint 'user_id'
     t.string 'created_by'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
@@ -53,8 +52,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
   end
 
   create_table 'tournament_participating_teams', force: :cascade do |t|
-    t.integer 'tournament_id'
-    t.integer 'team_id'
+    t.bigint 'tournament_id'
+    t.bigint 'team_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['team_id'], name: 'index_tournament_participating_teams_on_team_id'
@@ -63,8 +62,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
   end
 
   create_table 'tournament_participating_users', force: :cascade do |t|
-    t.integer 'tournament_id'
-    t.integer 'user_id'
+    t.bigint 'tournament_id'
+    t.bigint 'user_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index %w[tournament_id user_id], name: 'index_participating_users_to_not_be_duplicates', unique: true
@@ -98,7 +97,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
     t.index ['team_id'], name: 'index_users_on_team_id'
   end
 
+  add_foreign_key 'matches', 'tournaments', on_delete: :cascade
+  add_foreign_key 'team_invitations', 'teams', on_delete: :cascade
+  add_foreign_key 'team_invitations', 'users', on_delete: :cascade
   add_foreign_key 'teams', 'users', column: 'leader_id'
-  add_foreign_key 'tournaments', 'users', column: 'organizer_id'
+  add_foreign_key 'tournament_participating_teams', 'teams', on_delete: :cascade
+  add_foreign_key 'tournament_participating_teams', 'tournaments', on_delete: :cascade
+  add_foreign_key 'tournament_participating_users', 'tournaments', on_delete: :cascade
+  add_foreign_key 'tournament_participating_users', 'users', on_delete: :cascade
+  add_foreign_key 'tournaments', 'users', column: 'organizer_id', on_delete: :cascade
   add_foreign_key 'users', 'teams'
 end

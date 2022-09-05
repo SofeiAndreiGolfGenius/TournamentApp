@@ -5,8 +5,8 @@ module TournamentsHelper
     tournament.organizer_id == user.id
   end
 
-  def round_name(number_of_matches_in_round)
-    Constants::ROUND_NAME[number_of_matches_in_round.to_s]
+  def round_name(matches_in_round)
+    Constants::ROUND_NAME[matches_in_round.to_s]
   end
 
   def nr_of_rounds
@@ -15,8 +15,9 @@ module TournamentsHelper
     Math.log2(nr_participants) == log2_integer ? log2_integer : log2_integer + 1
   end
 
-  def initialize_matches
-    @randomized_participants = !@tournament.team_sport ? @tournament.users.shuffle : @tournament.teams.shuffle
+  def start_tournament
+    @tournament.update(started: true, round: 1, nr_of_rounds: nr_of_rounds)
+    @randomized_participants = take_participants.shuffle
     nr_games_in_first_round = 2**(@tournament.nr_of_rounds - 1)
     nr_games_in_total = 2**@tournament.nr_of_rounds - 1
     (0..nr_games_in_first_round - 1).each do |i|
@@ -44,5 +45,21 @@ module TournamentsHelper
     end
     end_interval = start_interval + 2**(nr_rounds - round_number) - 1
     @tournament.matches[start_interval..end_interval]
+  end
+
+  def tournament_winner
+    if !@tournament.team_sport?
+      User.find(@tournament.matches.last.winner_id)
+    else
+      Team.find(@tournament.matches.last.winner_id)
+    end
+  end
+
+  def take_participants
+    if @tournament.team_sport?
+      @tournament.teams.paginate(page: params[:page])
+    else
+      @tournament.users.paginate(page: params[:page])
+    end
   end
 end

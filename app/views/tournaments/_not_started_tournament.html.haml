@@ -3,7 +3,7 @@
 
 %br
   %br
-- if @tournament.sport == 'golf'
+- if !@tournament.team_sport?
 
   - if !user_already_joined?(@tournament, current_user)
     = form_with(model: current_user.tournament_participating_users.build, local: true) do |f|
@@ -15,30 +15,31 @@
       = f.submit 'Leave tournament', class: 'btn btn-primary gray_button'
 
   %h2 Participants
-  = will_paginate @paticipating_users
+  = will_paginate @participants
   %ul
-    - @paticipating_users.each do |user|
+    - @participants.each do |user|
       %li
         = render 'users/user', user: user
-  = will_paginate @paticipating_users
+  = will_paginate @participants
 
 
 - else
 
   - if !current_user.team_id.nil?
-    - if !team_already_joined?(@tournament, get_team(current_user))
-      = form_with(model: get_team(current_user).tournament_participating_teams.build, local: true) do |f|
-        %div
-          = hidden_field_tag :tournament_id, @tournament.id
-        = f.submit 'Join tournament', class: 'btn btn-primary gray_button'
-    - else
-      = form_with(model: get_team(current_user).tournament_participating_teams.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
-        = f.submit 'Leave tournament', class: 'btn btn-primary gray_button'
+    - if get_team(current_user).leader_id == current_user.id
+      - if !team_already_joined?(@tournament, get_team(current_user))
+        = form_with(model: get_team(current_user).tournament_participating_teams.build, local: true) do |f|
+          %div
+            = hidden_field_tag :tournament_id, @tournament.id
+          = f.submit 'Join tournament', class: 'btn btn-primary gray_button'
+      - else
+        = form_with(model: get_team(current_user).tournament_participating_teams.find_by(tournament_id: @tournament.id), method: :delete, local:true) do |f|
+          = f.submit 'Leave tournament', class: 'btn btn-primary gray_button'
 
   %h2 Participants
-  = will_paginate @paticipating_teams
+  = will_paginate @participants
   %ul
-    - @paticipating_teams.each do |team|
+    - @participants.each do |team|
       %li
         = render 'teams/team', team: team
-  = will_paginate @paticipating_teams
+  = will_paginate @participants

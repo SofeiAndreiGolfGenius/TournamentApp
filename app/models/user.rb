@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   has_one :team
+  has_many :tournaments, dependent: :destroy
 
   has_many :team_invitations, dependent: :destroy
   has_many :teams, through: :team_invitations

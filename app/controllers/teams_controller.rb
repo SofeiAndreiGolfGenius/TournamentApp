@@ -14,7 +14,6 @@ class TeamsController < ApplicationController
 
     if @team.save
       current_user.join_team(@team.id)
-      current_user.save
       flash[:success] = Constants::MESSAGES['TeamCreateSuccess']
       redirect_to root_path
     else
@@ -33,8 +32,7 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @team = Team.find(params[:id])
-    @leader = User.find(@team.leader_id)
+    @team = Team.includes(:leader).find(params[:id])
     @members = @team.members.where.not(id: @team.leader_id).paginate(page: params[:page])
     @invitations = @team.team_invitations.where(created_by: 'team').paginate(page: params[:page])
   end
@@ -64,18 +62,8 @@ class TeamsController < ApplicationController
 
   def destroy
     @team = Team.find(params[:id])
-
     # put as nil in matches they take part in
-    matches = Match.all.where("player1_id = #{@team.id} or player2_id = #{@team.id}", team_sport: true)
-    matches.each do |match|
-      if match.player1_id == @team.id
-        match.update_attribute(:player1_id, nil)
-      else
-        match.update_attribute(:player2_id, nil)
-      end
-      match.declare_winner
-    end
-
+    make_player_nil(@team, true)
     @team.destroy!
     flash[:success] = Constants::MESSAGES['TeamDeleteSuccess']
     redirect_to root_path

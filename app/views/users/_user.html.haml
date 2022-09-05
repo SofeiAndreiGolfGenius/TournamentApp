@@ -3,5 +3,7 @@
   = "-> (You)"
 - else
   - if user.team_id.nil? && !current_user.team_id.nil?
-    - if get_team(current_user).leader_id == current_user.id
+    - if !already_invited?(user, get_team(current_user))
       = "-> (Available to recruit to team)"
+    - else
+      = "-> (Already invited to team)"

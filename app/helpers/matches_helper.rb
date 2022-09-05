@@ -10,4 +10,16 @@ module MatchesHelper
       user.id == match.player1_id || user.id == match.player2_id
     end
   end
+
+  def make_player_nil(player, is_team)
+    matches = Match.all.where("player1_id = #{player.id} or player2_id = #{player.id}", team_sport: is_team)
+    matches.each do |match|
+      if match.player1_id == player.id
+        match.update_attribute(:player1_id, nil)
+      else
+        match.update_attribute(:player2_id, nil)
+      end
+      match.declare_winner
+    end
+  end
 end

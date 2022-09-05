@@ -56,32 +56,15 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-
-    matches = Match.all.where("player1_id = #{@user.id} or player2_id = #{@user.id}", team_sport: false)
-    matches.each do |match|
-      if match.player1_id == @user.id
-        match.update_attribute(:player1_id, nil)
-      else
-        match.update_attribute(:player2_id, nil)
-      end
-      match.declare_winner
-    end
+    make_player_nil(@user, false)
 
     unless @user.team_id.nil?
-      team = Team.includes(:members).find(@user.team_id)
+      team = Team.find(@user.team_id)
       if team.leader_id == @user.id
         if team.members.size > 1
           team.update_attribute(:leader_id, team.members[1].id)
         else
-          matches = Match.all.where("player1_id = #{team.id} or player2_id = #{team.id}", team_sport: true)
-          matches.each do |match|
-            if match.player1_id == team.id
-              match.update_attribute(:player1_id, nil)
-            else
-              match.update_attribute(:player2_id, nil)
-            end
-            match.declare_winner
-          end
+          make_player_nil(team, true)
           team.destroy!
         end
       end
@@ -95,13 +78,6 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.order(created_at: :desc, id: :desc).paginate(page: params[:page], per_page: 20)
-  end
-
-  def join_team
-    @team = Team.find(params[:team_id])
-    current_user.join_team(@team.id)
-    current_user.save
-    redirect_to current_user
   end
 
   def leave_team
@@ -134,7 +110,10 @@ class UsersController < ApplicationController
   def team_leader
     user = User.find(params[:id])
     team = get_team(user)
-    redirect_to(user) unless current_user.id == team.leader_id
+    return if current_user.id == team.leader_id
+
+    flash[:danger] = Constants::MESSAGES['NotTeamLeader']
+    redirect_to(user)
   end
 
   def same_team

@@ -9,7 +9,7 @@ class CreateTournaments < ActiveRecord::Migration[7.0]
       t.integer :round
       t.integer :nr_of_rounds
 
-      t.references :organizer, foreign_key: { to_table: :users }
+      t.references :organizer, foreign_key: { to_table: :users, on_delete: :cascade }
       t.integer :winner_id
       t.timestamps
     end

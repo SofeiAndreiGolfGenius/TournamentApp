@@ -26,6 +26,7 @@ class Constants
     'UserCreateSuccess' => 'User registered successfully',
     'UserDeleteSuccess' => 'Deleted user successfully',
     'UserNotFound' => 'User not found',
+    'NotTeamLeader' => 'Only the team leader can join tournaments',
 
     'TournamentFull' => 'Sorry, the tournament is full',
     'TournamentStarted' => 'Sorry, the tournament has already started',
