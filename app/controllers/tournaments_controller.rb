@@ -40,8 +40,7 @@ class TournamentsController < ApplicationController
       current_round = @tournament.round
       if finished_round?(current_round)
         if current_round == @tournament.nr_of_rounds
-          @tournament.update_attribute(:winner_id, @tournament.matches.last.winner_id)
-          @message = "Congratulations #{tournament_winner.name} !!!"
+          declare_winner
         else
           start_next_round(current_round)
         end

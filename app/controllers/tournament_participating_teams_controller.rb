@@ -4,7 +4,7 @@ class TournamentParticipatingTeamsController < ApplicationController
   before_action :logged_in_user, only: %i[create destroy]
   before_action :full_tournament, only: [:create]
   before_action :started_tournament, only: [:create]
-  before_action :is_team_leader
+  before_action :check_team_leader
   def create
     @tournament = Tournament.find(params[:tournament_id])
     get_team(current_user).join_tournament(@tournament)
@@ -41,7 +41,7 @@ class TournamentParticipatingTeamsController < ApplicationController
     redirect_to(tournament)
   end
 
-  def is_team_leader
+  def check_team_leader
     return if team_leader?(current_user)
 
     flash[:danger] = Constants::MESSAGES['NotTeamLeader']

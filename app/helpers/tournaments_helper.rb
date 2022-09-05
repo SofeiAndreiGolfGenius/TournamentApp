@@ -47,6 +47,11 @@ module TournamentsHelper
     @tournament.matches[start_interval..end_interval]
   end
 
+  def declare_winner
+    @tournament.update_attribute(:winner_id, @tournament.matches.last.winner_id)
+    @message = "Congratulations #{tournament_winner.name} !!!"
+  end
+
   def tournament_winner
     if !@tournament.team_sport?
       User.find(@tournament.matches.last.winner_id)
