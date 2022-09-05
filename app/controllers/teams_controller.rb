@@ -15,7 +15,7 @@ class TeamsController < ApplicationController
     if @team.save
       current_user.join_team(@team.id)
       current_user.save
-      flash[:success] = 'Team created successfully'
+      flash[:success] = Constants::MESSAGES['TeamCreateSuccess']
       redirect_to root_path
     else
       render 'new'
@@ -25,7 +25,7 @@ class TeamsController < ApplicationController
   def search
     @team = Team.find_by_name(params[:name])
     if @team.nil?
-      flash[:danger] = 'Team not found'
+      flash[:danger] = Constants::MESSAGES['TeamNotFound']
       redirect_to teams_path
     else
       redirect_to @team
@@ -46,7 +46,7 @@ class TeamsController < ApplicationController
   def update
     @team = Team.find(params[:id])
     if @team.update(team_params)
-      flash[:success] = 'Changes saved successfully'
+      flash[:success] = Constants::MESSAGES['UpdateSuccess']
       redirect_to @team
     else
       render 'edit'
@@ -77,7 +77,7 @@ class TeamsController < ApplicationController
     end
 
     @team.destroy!
-    flash[:success] = 'Deleted team successfully'
+    flash[:success] = Constants::MESSAGES['TeamDeleteSuccess']
     redirect_to root_path
   end
 
@@ -95,7 +95,7 @@ class TeamsController < ApplicationController
   def not_member_of_a_team
     return if current_user.team_id.nil?
 
-    flash[:danger] = 'You already joined this team'
+    flash[:danger] = Constants::MESSAGES['YouAlreadyJoined']
     team = get_team(current_user)
     redirect_to team
   end

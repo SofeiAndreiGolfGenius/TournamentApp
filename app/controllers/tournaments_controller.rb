@@ -13,7 +13,7 @@ class TournamentsController < ApplicationController
     @tournament.team_sport = params[:sport] != 'golf'
     @tournament.organizer_id = current_user.id
     if @tournament.save
-      flash[:success] = 'Tournament created successfully'
+      flash[:success] = Constants::MESSAGES['TournamentCreateSuccess']
       redirect_to root_path
     else
       render 'new'
@@ -64,7 +64,7 @@ class TournamentsController < ApplicationController
 
   def destroy
     @tournament = Tournament.find(params[:id]).destroy
-    flash[:success] = 'Deleted tournament successfully'
+    flash[:success] = Constants::MESSAGES['TournamentDeleteSuccess']
     redirect_to root_path
   end
 
@@ -72,9 +72,9 @@ class TournamentsController < ApplicationController
     # The tournament should have at least 5 participants
     @tournament = Tournament.find(params[:id])
     if @tournament.users.size < 5 && @tournament.teams.size < 5
-      flash[:danger] = 'Not enough participants to start the tournament'
+      flash[:danger] = Constants::MESSAGES['TournamentNotEnoughPlayers']
     else
-      flash[:success] = 'Tournament started, good luck everyone!'
+      flash[:success] = Constants::MESSAGES['StartTournamentMessage']
       @tournament.update(started: true, round: 1, nr_of_rounds: nr_of_rounds)
       initialize_matches
     end

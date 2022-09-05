@@ -6,20 +6,7 @@ module TournamentsHelper
   end
 
   def round_name(number_of_matches_in_round)
-    case number_of_matches_in_round
-    when 1
-      'Final'
-    when 2
-      'Semifinals'
-    when 4
-      'Quarterfinals'
-    when 8
-      'Eighth-finals'
-    when 16
-      '16th-finals'
-    when 32
-      '32th-finals'
-    end
+    Constants::ROUND_NAME[number_of_matches_in_round.to_s]
   end
 
   def nr_of_rounds

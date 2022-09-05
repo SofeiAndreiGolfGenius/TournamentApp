@@ -28,7 +28,7 @@ class TournamentParticipatingTeamsController < ApplicationController
     tournament = Tournament.find(params[:tournament_id])
     return unless tournament.teams.size >= 32
 
-    flash[:danger] = 'Sorry, the tournament is full'
+    flash[:danger] = Constants::MESSAGES['TournamentFull']
     redirect_to(tournament)
   end
 
@@ -36,7 +36,7 @@ class TournamentParticipatingTeamsController < ApplicationController
     tournament = Tournament.find(params[:tournament_id])
     return unless tournament.started?
 
-    flash[:danger] = 'Sorry, the tournament has already started'
+    flash[:danger] = Constants::MESSAGES['TournamentStarted']
     redirect_to(tournament)
   end
 end

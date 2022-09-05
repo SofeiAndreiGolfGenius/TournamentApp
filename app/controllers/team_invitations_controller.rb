@@ -9,7 +9,7 @@ class TeamInvitationsController < ApplicationController
   def ask_to_join
     @team = Team.find(params[:id])
     current_user.ask_to_join(@team)
-    flash[:success] = 'Request sent, wait for a team member to accept you'
+    flash[:success] = Constants::MESSAGES['JoinRequestSent']
     respond_to do |format|
       format.html { redirect_to @team }
       format.js
@@ -21,7 +21,7 @@ class TeamInvitationsController < ApplicationController
     team_id = current_user.team_id
     team = Team.find(team_id)
     team.invite_to_team(@user)
-    flash[:success] = 'Invite sent, wait for the user to respond'
+    flash[:success] = Constants::MESSAGES['InviteSent']
     respond_to do |format|
       format.html { redirect_to @user }
       format.js
@@ -87,7 +87,7 @@ class TeamInvitationsController < ApplicationController
     user = User.find(params[:user_id])
     return unless user.team_id == current_user.id
 
-    flash[:success] = 'User already joined your team'
+    flash[:success] = Constants::MESSAGES['UserAlreadyJoinedYourTeam']
     redirect_to(get_team(user))
   end
 
@@ -95,7 +95,7 @@ class TeamInvitationsController < ApplicationController
     user = User.find(params[:user_id])
     return if user.team_id.nil?
 
-    flash[:danger] = 'User already joined another team'
+    flash[:danger] = Constants::MESSAGES['UserAlreadyJoinedAnotherTeam']
     redirect_to(user)
   end
 
@@ -103,7 +103,7 @@ class TeamInvitationsController < ApplicationController
     user = User.find(params[:id])
     return if user.team_id.nil?
 
-    flash[:danger] = 'You already joined this team'
+    flash[:danger] = Constants::MESSAGES['YouAlreadyJoined']
     redirect_to(get_team(user))
   end
 end

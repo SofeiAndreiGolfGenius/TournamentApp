@@ -3,6 +3,7 @@
 class Constants
   MESSAGES = {
     'NotLoggedIn' => 'Please log in',
+    'LoginSuccess' => 'Logged in as ',
     'LoginFail' => 'Wrong password or email',
 
     'ScoreSuccessByUser' => 'Score declared successfully, waiting for tournament organizer to approve',
@@ -18,7 +19,10 @@ class Constants
 
     'TeamCreateSuccess' => 'Team created successfully',
     'TeamDeleteSuccess' => 'Deleted team successfully',
+    'TeamNotFound' => 'Team not found',
+
     'UpdateSuccess' => 'Changes saved successfully',
+
     'UserCreateSuccess' => 'User registered successfully',
     'UserDeleteSuccess' => 'Deleted user successfully',
     'UserNotFound' => 'User not found',
@@ -29,5 +33,14 @@ class Constants
     'TournamentDeleteSuccess' => 'Deleted tournament successfully',
     'TournamentNotEnoughPlayers' => 'Not enough participants to start the tournament',
     'StartTournamentMessage' => 'Tournament started, good luck everyone!'
+  }.freeze
+
+  ROUND_NAME = {
+    '1' => 'Final',
+    '2' => 'Semifinals',
+    '4' => 'Quarterfinals',
+    '8' => 'Eighth-finals',
+    '16' => '16th-finals',
+    '32' => '32th-finals'
   }.freeze
 end

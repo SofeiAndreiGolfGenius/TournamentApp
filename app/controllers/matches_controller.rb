@@ -9,16 +9,17 @@ class MatchesController < ApplicationController
     @match = Match.includes(:tournament).find(params[:id])
     tournament = @match.tournament
     if @match.update(match_params)
-      message1 = 'Score declared successfully'
-      message2 = tournament_organizer?(tournament, current_user) ? '' : ', waiting for tournament organizer to approve'
-      flash[:success] = message1 + message2
+      message = Constants::MESSAGES['ScoreSuccessByUser']
       if tournament_organizer?(tournament, current_user)
+        message = Constants::MESSAGES['ScoreSuccessByOrganizer']
         declare_winner
+        flash[:success] = message
       else
+        flash[:success] = message
         redirect_to tournament
       end
     else
-      flash[:danger] = 'Can not be a draw!'
+      flash[:danger] = Constants::MESSAGES['MatchDraw']
       redirect_to tournament
     end
   end
@@ -60,7 +61,7 @@ class MatchesController < ApplicationController
     return if match.player1_score.nil? && match.player2_score.nil?
 
     tournament = match.tournament
-    flash[:danger] = 'Score has already been declared'
+    flash[:danger] = Constants::MESSAGES['ScoreDeclared']
     redirect_to(tournament)
   end
 end

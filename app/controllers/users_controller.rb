@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       log_in @user
-      flash[:success] = 'User registered successfully'
+      flash[:success] = Constants::MESSAGES['UserCreateSuccess']
       redirect_to @user
     else
       render 'new'
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def search
     @user = User.find_by_name(params[:name])
     if @user.nil?
-      flash[:danger] = 'User not found'
+      flash[:danger] = Constants::MESSAGES['UserNotFound']
       redirect_to users_path
     else
       redirect_to @user
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      flash[:success] = 'Changes saved successfully'
+      flash[:success] = Constants::MESSAGES['UpdateSuccess']
       redirect_to @user
     else
       render 'edit'
@@ -89,7 +89,7 @@ class UsersController < ApplicationController
 
     log_out if @user.id == current_user.id
     @user.destroy!
-    flash[:success] = 'Deleted user successfully'
+    flash[:success] = Constants::MESSAGES['UserDeleteSuccess']
     redirect_to root_path
   end
 
