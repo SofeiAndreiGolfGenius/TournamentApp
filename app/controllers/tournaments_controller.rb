@@ -13,10 +13,20 @@ class TournamentsController < ApplicationController
     @tournament.team_sport = params[:sport] != 'golf'
     @tournament.organizer_id = current_user.id
     if @tournament.save
-      flash[:success] = Constants::MESSAGES['TournamentCreateSuccess']
+      flash[:success] = Constants::MESSAGES[:tournament_create_success]
       redirect_to root_path
     else
       render 'new'
+    end
+  end
+
+  def search
+    @tournament = Tournament.find_by_name(params[:name])
+    if @tournament.nil?
+      flash[:danger] = Constants::MESSAGES[:tournament_not_found]
+      redirect_to tournaments_path
+    else
+      redirect_to @tournament
     end
   end
 
@@ -47,13 +57,13 @@ class TournamentsController < ApplicationController
       end
     else
       winner = tournament_winner
-      @message = winner.nil? ? Constants::MESSAGES['WinnerHasBeenDeleted'] : "Congratulations #{winner.name} !!!"
+      @message = winner.nil? ? Constants::MESSAGES[:winner_has_been_deleted] : "Congratulations #{winner.name} !!!"
     end
   end
 
   def destroy
     @tournament = Tournament.find(params[:id]).destroy
-    flash[:success] = Constants::MESSAGES['TournamentDeleteSuccess']
+    flash[:success] = Constants::MESSAGES[:tournament_delete_success]
     redirect_to root_path
   end
 
@@ -61,9 +71,9 @@ class TournamentsController < ApplicationController
     # The tournament should have at least 5 participants
     @tournament = Tournament.find(params[:id])
     if @tournament.users.size < 5 && @tournament.teams.size < 5
-      flash[:danger] = Constants::MESSAGES['TournamentNotEnoughPlayers']
+      flash[:danger] = Constants::MESSAGES[:tournament_not_enough_players]
     else
-      flash[:success] = Constants::MESSAGES['StartTournamentMessage']
+      flash[:success] = Constants::MESSAGES[:start_tournament_message]
       start_tournament
     end
     redirect_to @tournament

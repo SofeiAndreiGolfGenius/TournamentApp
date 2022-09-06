@@ -30,7 +30,7 @@ class TournamentParticipatingTeamsController < ApplicationController
     tournament = Tournament.find(params[:tournament_id])
     return unless tournament.teams.size >= 32
 
-    flash[:danger] = Constants::MESSAGES['TournamentFull']
+    flash[:danger] = Constants::MESSAGES[:tournament_full]
     redirect_to(tournament)
   end
 
@@ -38,14 +38,14 @@ class TournamentParticipatingTeamsController < ApplicationController
     tournament = Tournament.find(params[:tournament_id])
     return unless tournament.started?
 
-    flash[:danger] = Constants::MESSAGES['TournamentStarted']
+    flash[:danger] = Constants::MESSAGES[:tournament_started]
     redirect_to(tournament)
   end
 
   def check_team_leader
     return if team_leader?(current_user)
 
-    flash[:danger] = Constants::MESSAGES['NotTeamLeader']
+    flash[:danger] = Constants::MESSAGES[:not_team_leader]
     redirect_to(tournament)
   end
 
@@ -53,7 +53,7 @@ class TournamentParticipatingTeamsController < ApplicationController
     tournament = TournamentParticipatingTeam.find(params[:id]).tournament
     return if team_already_joined?(tournament, get_team(current_user))
 
-    flash[:danger] = Constants::MESSAGES['AlreadyJoinedTournament']
+    flash[:danger] = Constants::MESSAGES[:have_not_joined_tournament]
     redirect_to tournament
   end
 end

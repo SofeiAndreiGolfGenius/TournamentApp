@@ -27,6 +27,7 @@ class User < ApplicationRecord
 
   def join_team(team_id)
     update_attribute(:team_id, team_id)
+    teams.delete_all
   end
 
   def ask_to_join(team)

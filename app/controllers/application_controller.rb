@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   def logged_in_user
     return if logged_in?
 
-    flash[:danger] = Constants::MESSAGES['NotLoggedIn']
+    flash[:danger] = Constants::MESSAGES[:not_logged_in]
     redirect_to login_url
   end
 end

@@ -2,43 +2,46 @@
 
 class Constants
   MESSAGES = {
-    'NotLoggedIn' => 'Please log in',
-    'LoginSuccess' => 'Logged in as ',
-    'LoginFail' => 'Wrong password or email',
+    not_logged_in: 'Please log in',
+    login_success: 'Logged in as ',
+    login_fail: 'Wrong password or email',
 
-    'ScoreSuccessByUser' => 'Score declared successfully, waiting for tournament organizer to approve',
-    'ScoreSuccessByOrganizer' => 'Score declared successfully',
-    'MatchDraw' => 'Can not be a draw!',
-    'ScoreDeclared' => 'Score has already been declared',
+    score_success_by_user: 'Score declared successfully, waiting for tournament organizer to approve',
+    score_success_by_organizer: 'Score declared successfully',
+    match_draw: 'Can not be a draw!',
+    score_declared: 'Score has already been declared',
 
-    'JoinRequestSent' => 'Request sent, wait for a team member to accept you',
-    'InviteSent' => 'Invite sent, wait for the user to respond',
-    'UserAlreadyJoinedYourTeam' => 'User already joined your team',
-    'UserAlreadyJoinedAnotherTeam' => 'User already joined another team',
-    'YouAlreadyJoined' => 'You already joined this team',
-    'YouDoNotHaveATeam' => "You don't have a team to invite to",
-    'YouAlreadyHaveATeam' => 'You already have a team',
-    'UserAlreadyHasATeam' => 'User already has a team',
+    join_request_sent: 'Request sent, wait for a team member to accept you',
+    invite_sent: 'Invite sent, wait for the user to respond',
+    user_already_joined_your_team: 'User already joined your team',
+    user_already_joined_another_team: 'User already joined another team',
+    you_already_joined: 'You already joined this team',
+    you_do_not_have_a_team: "You don't have a team to invite to",
+    you_already_have_a_team: 'You already have a team',
+    user_already_has_a_team: 'User already has a team',
 
-    'TeamCreateSuccess' => 'Team created successfully',
-    'TeamDeleteSuccess' => 'Deleted team successfully',
-    'TeamNotFound' => 'Team not found',
+    team_create_success: 'Team created successfully',
+    team_delete_success: 'Deleted team successfully',
+    team_not_found: 'Team not found',
 
-    'UpdateSuccess' => 'Changes saved successfully',
+    update_success: 'Changes saved successfully',
 
-    'UserCreateSuccess' => 'User registered successfully',
-    'UserDeleteSuccess' => 'Deleted user successfully',
-    'UserNotFound' => 'User not found',
-    'NotTeamLeader' => 'Only the team leader can join tournaments',
+    user_create_success: 'User registered successfully',
+    user_delete_success: 'Deleted user successfully',
+    user_not_found: 'User not found',
+    not_team_leader: 'Only the team leader can join tournaments',
 
-    'TournamentFull' => 'Sorry, the tournament is full',
-    'TournamentStarted' => 'Sorry, the tournament has already started',
-    'TournamentCreateSuccess' => 'Tournament created successfully',
-    'TournamentDeleteSuccess' => 'Deleted tournament successfully',
-    'TournamentNotEnoughPlayers' => 'Not enough participants to start the tournament',
-    'AlreadyJoinedTournament' => 'You already joined the tournament',
-    'WinnerHasBeenDeleted' => 'The winner has been deleted :(',
-    'StartTournamentMessage' => 'Tournament started, good luck everyone!'
+    tournament_full: 'Sorry, the tournament is full',
+    tournament_started: 'Sorry, the tournament has already started',
+
+    tournament_create_success: 'Tournament created successfully',
+    tournament_delete_success: 'Deleted tournament successfully',
+    tournament_not_found: 'Tournament not found',
+
+    tournament_not_enough_players: 'Not enough participants to start the tournament',
+    have_not_joined_tournament: "You did not join the tournament, so you can't leave from it",
+    winner_has_been_deleted: 'The winner has been deleted :(',
+    start_tournament_message: 'Tournament started, good luck everyone!'
   }.freeze
 
   ROUND_NAME = {

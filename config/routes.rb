@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   resources :tournaments do
     collection do
       get 'create', action: 'new', as: 'create'
+      get :search
     end
     member do
       get :start

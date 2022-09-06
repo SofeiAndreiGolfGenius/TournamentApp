@@ -3,6 +3,10 @@
 %p
   = link_to 'Create a new Tournament', create_tournaments_path, class: 'btn btn-primary gray_button'
 
+%div
+  - provide(:model_search_path, search_tournaments_path)
+  = render 'shared/search_by_name'
+
 %div.right
   = render 'filter_by_sport'
 

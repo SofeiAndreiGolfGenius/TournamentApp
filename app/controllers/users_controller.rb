@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :logged_in_user, only: %i[edit update destroy team_invitations show index]
-  before_action :admin_user_or_current, only: [:destroy]
+  before_action :admin_or_current_user, only: [:destroy]
   before_action :correct_user, only: %i[edit update]
   before_action :same_team, only: [:kick_out_of_team]
   before_action :team_leader, only: [:kick_out_of_team]
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       log_in @user
-      flash[:success] = Constants::MESSAGES['UserCreateSuccess']
+      flash[:success] = Constants::MESSAGES[:user_create_success]
       redirect_to @user
     else
       render 'new'
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def search
     @user = User.find_by_name(params[:name])
     if @user.nil?
-      flash[:danger] = Constants::MESSAGES['UserNotFound']
+      flash[:danger] = Constants::MESSAGES[:user_not_found]
       redirect_to users_path
     else
       redirect_to @user
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      flash[:success] = Constants::MESSAGES['UpdateSuccess']
+      flash[:success] = Constants::MESSAGES[:update_success]
       redirect_to @user
     else
       render 'edit'
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
 
     log_out if @user.id == current_user.id
     @user.destroy!
-    flash[:success] = Constants::MESSAGES['UserDeleteSuccess']
+    flash[:success] = Constants::MESSAGES[:user_delete_success]
     redirect_to root_path
   end
 
@@ -112,7 +112,7 @@ class UsersController < ApplicationController
     team = get_team(user)
     return if current_user.id == team.leader_id
 
-    flash[:danger] = Constants::MESSAGES['NotTeamLeader']
+    flash[:danger] = Constants::MESSAGES[:not_team_leader]
     redirect_to(user)
   end
 
@@ -121,7 +121,7 @@ class UsersController < ApplicationController
     redirect_to(user) unless same_team?(current_user, user)
   end
 
-  def admin_user_or_current
+  def admin_or_current_user
     user = User.find(params[:id])
     redirect_to(root_url) unless current_user.admin? || current_user.id == user.id
   end

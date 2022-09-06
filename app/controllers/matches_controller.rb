@@ -9,9 +9,9 @@ class MatchesController < ApplicationController
     @match = Match.includes(:tournament).find(params[:id])
     tournament = @match.tournament
     if @match.update(match_params)
-      message = Constants::MESSAGES['ScoreSuccessByUser']
+      message = Constants::MESSAGES[:score_success_by_user]
       if tournament_organizer?(tournament, current_user)
-        message = Constants::MESSAGES['ScoreSuccessByOrganizer']
+        message = Constants::MESSAGES[:score_success_by_organizer]
         declare_winner
         flash[:success] = message
       else
@@ -19,7 +19,7 @@ class MatchesController < ApplicationController
         redirect_to tournament
       end
     else
-      flash[:danger] = Constants::MESSAGES['MatchDraw']
+      flash[:danger] = Constants::MESSAGES[:match_draw]
       redirect_to tournament
     end
   end
@@ -61,7 +61,7 @@ class MatchesController < ApplicationController
     return if match.player1_score.nil? && match.player2_score.nil?
 
     tournament = match.tournament
-    flash[:danger] = Constants::MESSAGES['ScoreDeclared']
+    flash[:danger] = Constants::MESSAGES[:score_declared]
     redirect_to(tournament)
   end
 end
