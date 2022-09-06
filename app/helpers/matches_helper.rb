@@ -19,7 +19,7 @@ module MatchesHelper
       else
         match.update_attribute(:player2_id, nil)
       end
-      match.declare_winner
+      match.declare_winner if match.winner_id.nil?
     end
   end
 end

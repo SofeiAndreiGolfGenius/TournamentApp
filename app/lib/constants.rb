@@ -33,6 +33,7 @@ class Constants
     'TournamentCreateSuccess' => 'Tournament created successfully',
     'TournamentDeleteSuccess' => 'Deleted tournament successfully',
     'TournamentNotEnoughPlayers' => 'Not enough participants to start the tournament',
+    'WinnerHasBeenDeleted' => 'The winner has been deleted :(',
     'StartTournamentMessage' => 'Tournament started, good luck everyone!'
   }.freeze
 

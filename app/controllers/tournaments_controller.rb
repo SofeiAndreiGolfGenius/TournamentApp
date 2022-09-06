@@ -46,7 +46,8 @@ class TournamentsController < ApplicationController
         end
       end
     else
-      @message = "Congratulations #{tournament_winner.name} !!!"
+      winner = tournament_winner
+      @message = winner.nil? ? Constants::MESSAGES['WinnerHasBeenDeleted'] : "Congratulations #{winner.name} !!!"
     end
   end
 

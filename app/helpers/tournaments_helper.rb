@@ -54,9 +54,9 @@ module TournamentsHelper
 
   def tournament_winner
     if !@tournament.team_sport?
-      User.find(@tournament.matches.last.winner_id)
+      User.find_by(id: @tournament.matches.last.winner_id)
     else
-      Team.find(@tournament.matches.last.winner_id)
+      Team.find_by(id: @tournament.matches.last.winner_id)
     end
   end
 
