@@ -16,6 +16,9 @@ class Constants
     'UserAlreadyJoinedYourTeam' => 'User already joined your team',
     'UserAlreadyJoinedAnotherTeam' => 'User already joined another team',
     'YouAlreadyJoined' => 'You already joined this team',
+    'YouDoNotHaveATeam' => "You don't have a team to invite to",
+    'YouAlreadyHaveATeam' => 'You already have a team',
+    'UserAlreadyHasATeam' => 'User already has a team',
 
     'TeamCreateSuccess' => 'Team created successfully',
     'TeamDeleteSuccess' => 'Deleted team successfully',
@@ -33,6 +36,7 @@ class Constants
     'TournamentCreateSuccess' => 'Tournament created successfully',
     'TournamentDeleteSuccess' => 'Deleted tournament successfully',
     'TournamentNotEnoughPlayers' => 'Not enough participants to start the tournament',
+    'AlreadyJoinedTournament' => 'You already joined the tournament',
     'WinnerHasBeenDeleted' => 'The winner has been deleted :(',
     'StartTournamentMessage' => 'Tournament started, good luck everyone!'
   }.freeze

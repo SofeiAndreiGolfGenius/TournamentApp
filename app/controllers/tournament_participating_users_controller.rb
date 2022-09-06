@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class TournamentParticipatingUsersController < ApplicationController
-  before_action :logged_in_user, only: %i[create destroy]
+  before_action :logged_in_user
   before_action :full_tournament, only: [:create]
   before_action :started_tournament, only: [:create]
+  before_action :not_joined, only: [:destroy]
   def create
     @tournament = Tournament.find(params[:tournament_id])
     current_user.join_tournament(@tournament)
@@ -38,5 +39,13 @@ class TournamentParticipatingUsersController < ApplicationController
 
     flash[:danger] = Constants::MESSAGES['TournamentStarted']
     redirect_to(tournament)
+  end
+
+  def not_joined
+    tournament = TournamentParticipatingUser.find(params[:id]).tournament
+    return if user_already_joined?(tournament, current_user)
+
+    flash[:danger] = Constants::MESSAGES['AlreadyJoinedTournament']
+    redirect_to tournament
   end
 end

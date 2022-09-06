@@ -6,6 +6,9 @@ class TeamInvitationsController < ApplicationController
   before_action :already_joined_your_team, only: %i[approve_invitation deny_invitation]
   before_action :already_joined_another_team, only: %i[approve_invitation deny_invitation]
   before_action :you_already_joined_a_team, only: %i[accept_invitation reject_invitation]
+  before_action :you_have_a_team, only: [:invite_to]
+  before_action :user_does_not_have_a_team, only: [:invite_to]
+  before_action :you_do_not_have_a_team, only: [:ask_to_join]
   def ask_to_join
     @team = Team.find(params[:id])
     current_user.ask_to_join(@team)
@@ -105,5 +108,27 @@ class TeamInvitationsController < ApplicationController
 
     flash[:danger] = Constants::MESSAGES['YouAlreadyJoined']
     redirect_to(get_team(user))
+  end
+
+  def you_have_a_team
+    return unless current_user.team_id.nil?
+
+    flash[:danger] = Constants::MESSAGES['YouDoNotHaveATeam']
+    redirect_to current_user
+  end
+
+  def you_do_not_have_a_team
+    return if current_user.team_id.nil?
+
+    flash[:danger] = Constants::MESSAGES['YouAlreadyHaveATeam']
+    redirect_to current_user
+  end
+
+  def user_does_not_have_a_team
+    user = User.find(params[:id])
+    return if user.team_id.nil?
+
+    flash[:danger] = Constants::MESSAGES['UserAlreadyHasATeam']
+    redirect_to user
   end
 end
