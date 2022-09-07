@@ -110,7 +110,8 @@ class TournamentsController < ApplicationController
     new_matches = get_matches_from_round(current_round + 1)
     (0..new_matches.size - 1).each do |i|
       new_matches[i].update!(player1_id: finished_matches[i * 2].winner_id,
-                             player2_id: finished_matches[i * 2 + 1].winner_id)
+                             player2_id: finished_matches[i * 2 + 1].winner_id,
+                             in_round: current_round + 1)
       new_matches[i].declare_winner if new_matches[i].player1_id.nil? || new_matches[i].player2_id.nil?
     end
     @tournament.update(round: current_round + 1)

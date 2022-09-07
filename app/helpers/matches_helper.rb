@@ -12,14 +12,14 @@ module MatchesHelper
   end
 
   def make_player_nil(player, is_team)
-    matches = Match.all.where("player1_id = #{player.id} or player2_id = #{player.id}", team_sport: is_team)
+    matches = Match.includes(:tournament).all.where("player1_id = #{player.id} or player2_id = #{player.id}", team_sport: is_team)
     matches.each do |match|
       if match.player1_id == player.id
         match.update_attribute(:player1_id, nil)
       else
         match.update_attribute(:player2_id, nil)
       end
-      match.declare_winner if match.winner_id.nil?
+      match.declare_winner if match.winner_id.nil? || match.in_round == match.tournament.round
     end
   end
 end
