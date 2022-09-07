@@ -1,0 +1,2 @@
+= form_with(model: current_user.sent_friend_requests.find_by(receiver_id: @user.id), html: {method: :delete}, local: true) do |f|
+  = f.submit 'Retract friend request', class: 'btn btn-primary gray_button'

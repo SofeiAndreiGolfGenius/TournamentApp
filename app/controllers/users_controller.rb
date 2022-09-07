@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: %i[edit update destroy team_invitations show index]
+  require 'will_paginate/array'
+  before_action :logged_in_user,
+                only: %i[edit update destroy team_invitations show index leave_team kick_out_of_team
+                         received_friend_requests friends]
   before_action :admin_or_current_user, only: [:destroy]
-  before_action :correct_user, only: %i[edit update]
+  before_action :correct_user, only: %i[edit update received_friend_requests friends]
   before_action :same_team, only: [:kick_out_of_team]
   before_action :team_leader, only: [:kick_out_of_team]
   def new
@@ -92,8 +95,14 @@ class UsersController < ApplicationController
     redirect_to team
   end
 
-  def team_invitations
+  def received_friend_requests
     @user = User.find(params[:id])
+    @friend_requests = @user.received_friend_requests.paginate(page: params[:page], per_page: 20)
+  end
+
+  def friends
+    @user = User.find(params[:id])
+    @friends = @user.friends.paginate(page: params[:page], per_page: 20)
   end
 
   private

@@ -1,0 +1,5 @@
+%div
+  - if !current_user.sent_request?(@user)
+    = render 'send_friend_request'
+  - else
+    = render 'retract_friend_request'

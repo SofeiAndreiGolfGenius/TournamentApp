@@ -10,9 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_07_063439) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "friend_requests", force: :cascade do |t|
+    t.bigint "receiver_id"
+    t.bigint "sender_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["receiver_id", "sender_id"], name: "index_friend_requests_on_receiver_id_and_sender_id", unique: true
+    t.index ["receiver_id"], name: "index_friend_requests_on_receiver_id"
+    t.index ["sender_id"], name: "index_friend_requests_on_sender_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.bigint "user1_id"
+    t.bigint "user2_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user1_id", "user2_id"], name: "index_friendships_on_user1_id_and_user2_id", unique: true
+    t.index ["user1_id"], name: "index_friendships_on_user1_id"
+    t.index ["user2_id"], name: "index_friendships_on_user2_id"
+  end
 
   create_table "matches", force: :cascade do |t|
     t.bigint "tournament_id"
@@ -95,6 +115,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_112956) do
     t.index ["team_id"], name: "index_users_on_team_id"
   end
 
+  add_foreign_key "friend_requests", "users", column: "receiver_id", on_delete: :cascade
+  add_foreign_key "friend_requests", "users", column: "sender_id", on_delete: :cascade
+  add_foreign_key "friendships", "users", column: "user1_id", on_delete: :cascade
+  add_foreign_key "friendships", "users", column: "user2_id", on_delete: :cascade
   add_foreign_key "matches", "tournaments", on_delete: :cascade
   add_foreign_key "team_invitations", "teams", on_delete: :cascade
   add_foreign_key "team_invitations", "users", on_delete: :cascade
