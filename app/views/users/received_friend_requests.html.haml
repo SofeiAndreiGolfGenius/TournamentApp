@@ -1,0 +1,11 @@
+- if @friend_requests.empty?
+  You don't have any friend requests
+- else
+  = will_paginate @friend_requests
+  %ul
+    - @friend_requests.each do |friend_request|
+      %li
+        = render friend_request.sender
+        = render friend_request
+
+  = will_paginate @friend_requests

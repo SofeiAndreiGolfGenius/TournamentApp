@@ -13,7 +13,8 @@ Rails.application.routes.draw do
     member do
       get 'leave', action: 'leave_team', as: 'leave'
       get 'kick_out', action: 'kick_out_of_team', as: 'kick_out'
-      get :team_invitations
+      get :received_friend_requests
+      get :friends
     end
     collection do
       get :search
@@ -56,6 +57,13 @@ Rails.application.routes.draw do
       get :reset_score
     end
   end
+  resources :friend_requests, only: %i[create destroy] do
+    member do
+      get 'accept/:request_id', action: 'accept', as: 'accept'
+      get 'reject/:request_id', action: 'reject', as: 'reject'
+    end
+  end
+  resources :friendships, only: %i[create destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

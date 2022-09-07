@@ -41,7 +41,12 @@ class Constants
     tournament_not_enough_players: 'Not enough participants to start the tournament',
     have_not_joined_tournament: "You did not join the tournament, so you can't leave from it",
     winner_has_been_deleted: 'The winner has been deleted :(',
-    start_tournament_message: 'Tournament started, good luck everyone!'
+    start_tournament_message: 'Tournament started, good luck everyone!',
+
+    can_only_answer_requests_for_you: 'You can only answer to friend requests that are sent to you!',
+    friendship_create_success: 'You are now friends!',
+    friendship_delete_success: 'User unfriended!',
+    can_only_delete_your_friendships: 'You can only delete your friendships!'
   }.freeze
 
   ROUND_NAME = {

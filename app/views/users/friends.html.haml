@@ -1,0 +1,12 @@
+%h1
+  Friends
+- if @friends.empty?
+  You don't have any friends
+- else
+  = will_paginate @friends
+  %ul
+    - @friends.each do |friend|
+      %li
+        = render friend
+
+  = will_paginate @friends

@@ -2,6 +2,21 @@
   = @user.name
   = image_tag('user_icon.jpeg', width: 45)
 
+- if !current_user?(@user)
+  - unless current_user.friend?(@user)
+    - if @user.sent_request?(current_user)
+      = render friend_request(current_user, @user)
+    - else
+      = render 'friend_request_form'
+  - else
+    = form_with(model: current_user.friendship(@user), html: {method: :delete}, local: true) do |f|
+      = f.submit 'Unfriend', class: 'btn btn-primary gray_button'
+- else
+  = link_to 'Show Friends List', friends_user_path(current_user), class:'btn btn-primary gray_button'
+  = link_to "#{current_user.received_friend_requests.size} Pending Friend Requests", received_friend_requests_user_path, class:'btn btn-primary gray_button'
+
+%br
+
 - if !@user.team_id.nil?
   %h2 Team
   %div
