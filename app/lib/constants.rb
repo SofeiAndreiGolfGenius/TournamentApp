@@ -44,6 +44,9 @@ class Constants
     start_tournament_message: 'Tournament started, good luck everyone!',
 
     can_only_answer_requests_for_you: 'You can only answer to friend requests that are sent to you!',
+    can_only_retract_your_friend_requests: 'You can only retract your own friend requests',
+    user_already_sent_you_request: 'User already sent you a friend request',
+    you_are_already_friends: 'You are already friends',
     friendship_create_success: 'You are now friends!',
     friendship_delete_success: 'User unfriended!',
     can_only_delete_your_friendships: 'You can only delete your friendships!'
