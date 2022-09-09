@@ -11,7 +11,7 @@
       - if i == 0 || @messages[i].created_at.in_time_zone('Bucharest').to_date != @messages[i-1].created_at.in_time_zone('Bucharest').to_date
         %div.center_vertically
           = @messages[i].created_at.in_time_zone('Bucharest').to_date
-      - if !red_line_appeared && ((i == 0 && !@messages[i].read?) || !@messages[i].read? && @messages[i].receiver_id == @me.id)
+      - if !red_line_appeared && (@messages[i].receiver_id == @me.id && ((i == 0 && !@messages[i].read?) || !@messages[i].read?))
         %div.center_vertically
           - red_line_appeared = true
           = 'Unread Messages'
