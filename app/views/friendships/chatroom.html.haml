@@ -1,0 +1,21 @@
+= javascript_pack_tag 'scroll_bottom', 'data-turbolinks-track': 'reload'
+
+= link_to @friend.name, @friend, class: 'item_for_index'
+%br
+- if @messages.empty?
+  = "Start a conversation with #{@friend.name}"
+- else
+  %div.messages
+    - (0..@messages.size-1).each do |i|
+      - if i == 0 || @messages[i].created_at.in_time_zone('Bucharest').to_date != @messages[i-1].created_at.in_time_zone('Bucharest').to_date
+        %div.center_vertically
+          = @messages[i].created_at.in_time_zone('Bucharest').to_date
+      - if @messages[i].sender_id == @me.id
+        %div.right.message_sent
+          = render @messages[i]
+      - else
+        %div.message_received
+          = render @messages[i]
+- provide(:submit_button_text, "Send")
+- provide(:friendship, @friendship)
+= render 'messages/message_form'

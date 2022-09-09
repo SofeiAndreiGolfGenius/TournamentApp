@@ -10,6 +10,17 @@ class FriendshipsController < ApplicationController
     redirect_to root_path
   end
 
+  def chatroom
+    @friendship = Friendship.includes(:messages).find(params[:id])
+    @me = current_user
+    @friend = if current_user?(@friendship.user1)
+                @friendship.user2
+              else
+                @friendship.user1
+              end
+    @messages = @friendship.messages
+  end
+
   private
 
   def correct_user

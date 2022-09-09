@@ -7,6 +7,6 @@
   %ul
     - @friends.each do |friend|
       %li
-        = render friend
-
+        = link_to friend.name, friend, class: 'item_for_index'
+        = link_to image_tag('message_icon.jpeg',width: '30px', alt: 'Chatroom'), chatroom_friendship_path(current_user.friendship(friend))
   = will_paginate @friends

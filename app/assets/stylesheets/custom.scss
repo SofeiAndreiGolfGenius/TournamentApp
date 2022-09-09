@@ -95,3 +95,42 @@ body{
 .checkbox{
   accent-color: #2E2F30;
 }
+.friend{
+
+}
+.messages{
+  flex-direction: column;
+  display: flex;
+  width: auto;
+  .message_sent{
+    width: fit-content;
+    max-width: 300px;
+    height: fit-content;
+    align-self: end;
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+  }
+  .message_received{
+    width: fit-content;
+    max-width: 300px;
+    height: fit-content;
+    align-self: start;
+    border: 2px solid #ccc;
+    background-color: #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+  }
+  .date{
+    align-self: end;
+  }
+}
+
+.form-inline{
+  .send_message_content_field{
+    width: 90%;
+  }
+}
