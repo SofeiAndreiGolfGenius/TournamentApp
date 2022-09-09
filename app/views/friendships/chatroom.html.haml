@@ -6,10 +6,15 @@
   = "Start a conversation with #{@friend.name}"
 - else
   %div.messages
+    - red_line_appeared = false
     - (0..@messages.size-1).each do |i|
       - if i == 0 || @messages[i].created_at.in_time_zone('Bucharest').to_date != @messages[i-1].created_at.in_time_zone('Bucharest').to_date
         %div.center_vertically
           = @messages[i].created_at.in_time_zone('Bucharest').to_date
+      - if !red_line_appeared && ((i == 0 && !@messages[i].read?) || !@messages[i].read? && @messages[i].receiver_id == @me.id)
+        %div.center_vertically
+          - red_line_appeared = true
+          = 'Unread Messages'
       - if @messages[i].sender_id == @me.id
         %div.right.message_sent
           = render @messages[i]
