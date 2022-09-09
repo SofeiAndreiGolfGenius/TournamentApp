@@ -1,0 +1,6 @@
+= form_with(model: Message.new, html: {class: 'form-inline'}, local: true) do |f|
+  = f.text_area :content, class: 'form-control send_message_content_field'
+  = hidden_field_tag :friendship_id, @friendship.id
+  = hidden_field_tag :sender_id, @me.id
+  = hidden_field_tag :receiver_id, @friend.id
+  = f.submit yield(:submit_button_text), class: 'btn btn-primary gray_button'

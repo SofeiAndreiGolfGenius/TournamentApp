@@ -49,7 +49,12 @@ class Constants
     you_are_already_friends: 'You are already friends',
     friendship_create_success: 'You are now friends!',
     friendship_delete_success: 'User unfriended!',
-    can_only_delete_your_friendships: 'You can only delete your friendships!'
+    can_only_delete_your_friendships: 'You can only delete your friendships!',
+
+    message_create_failed: 'Failed to send message',
+    message_delete_success: 'Message deleted!',
+    can_only_delete_your_messages: 'Can only delete your messages!'
+
   }.freeze
 
   ROUND_NAME = {

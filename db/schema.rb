@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_07_063439) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_09_062357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_063439) do
     t.datetime "updated_at", null: false
     t.index ["tournament_id", "player1_id", "player2_id"], name: "index_matches_on_tournament_id_and_player1_id_and_player2_id", unique: true
     t.index ["tournament_id"], name: "index_matches_on_tournament_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "friendship_id"
+    t.text "content"
+    t.integer "sender_id"
+    t.integer "receiver_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "read", default: false
+    t.index ["created_at"], name: "index_messages_on_created_at"
+    t.index ["friendship_id"], name: "index_messages_on_friendship_id"
   end
 
   create_table "team_invitations", force: :cascade do |t|
@@ -120,6 +132,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_063439) do
   add_foreign_key "friendships", "users", column: "user1_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "user2_id", on_delete: :cascade
   add_foreign_key "matches", "tournaments", on_delete: :cascade
+  add_foreign_key "messages", "friendships", on_delete: :cascade
   add_foreign_key "team_invitations", "teams", on_delete: :cascade
   add_foreign_key "team_invitations", "users", on_delete: :cascade
   add_foreign_key "teams", "users", column: "leader_id"

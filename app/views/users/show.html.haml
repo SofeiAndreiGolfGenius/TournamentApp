@@ -9,8 +9,12 @@
     - else
       = render 'friend_request_form'
   - else
+    %div.right
+      = 'Send a message'
+      = link_to image_tag('message_icon.jpeg', width: '45px', alt: 'Chatroom'), chatroom_friendship_path(current_user.friendship(@user))
     = form_with(model: current_user.friendship(@user), html: {method: :delete}, local: true) do |f|
       = f.submit 'Unfriend', class: 'btn btn-primary gray_button'
+
 - else
   = link_to 'Show Friends List', friends_user_path(current_user), class:'btn btn-primary gray_button'
   = link_to "#{current_user.received_friend_requests.size} Pending Friend Requests", received_friend_requests_user_path, class:'btn btn-primary gray_button'

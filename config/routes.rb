@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'messages/create'
+  get 'messages/destroy'
   root 'static_pages#home'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
@@ -63,7 +65,12 @@ Rails.application.routes.draw do
       get 'reject/:request_id', action: 'reject', as: 'reject'
     end
   end
-  resources :friendships, only: %i[create destroy]
+  resources :friendships, only: [:destroy] do
+    member do
+      get :chatroom
+    end
+  end
+  resources :messages, only: %i[create destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
