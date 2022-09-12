@@ -98,6 +98,8 @@ class User < ApplicationRecord
     friends1 + friends2
   end
 
+  # define sort of get_friendships function
+
   def friendship(user)
     Friendship.where("(user1_id = #{id} and user2_id = #{user.id}) or (user1_id = #{user.id} and user2_id = #{id})").first
   end

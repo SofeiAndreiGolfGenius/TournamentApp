@@ -33,6 +33,7 @@ class FriendshipsController < ApplicationController
   end
 
   def read_messages
+    # @messages.where(read: false, receiver_id: @me.id).update_all(read: true)
     @messages.each do |message|
       message.read_message if !message.read? && message.receiver_id == current_user.id
     end

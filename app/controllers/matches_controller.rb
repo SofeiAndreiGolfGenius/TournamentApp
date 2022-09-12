@@ -5,6 +5,7 @@ class MatchesController < ApplicationController
   before_action :tournament_organizer, only: %i[declare_winner reset_score]
   before_action :match_participant_or_organizer, only: [:update]
   before_action :score_already_declared, only: %i[update]
+
   def update
     @match = Match.includes(:tournament).find(params[:id])
     tournament = @match.tournament

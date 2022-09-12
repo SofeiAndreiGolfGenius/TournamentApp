@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
   before_action :logged_in_user
   before_action :sender, only: [:destroy]
+
   def create
     friendship = Friendship.find(params[:friendship_id])
     @message = friendship.messages.build(message_params)
